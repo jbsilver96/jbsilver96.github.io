@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Current — NYC events, every day</title><style>* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0c0c12; color:#f2f2f5; font-family:-apple-system,'Helvetica Neue',Arial,sans-serif; padding:40px 22px 60px; }
+.wrap { max-width:560px; margin:0 auto; }
+header { text-align:center; margin-bottom:44px; }
+header img { width:64px; }
+h1 { font-weight:200; font-size:44px; letter-spacing:.5px; margin-top:14px; }
+.tag { color:#a7a7b3; font-weight:300; margin-top:8px; font-size:16px; }
+.rule { width:44px; height:2px; background:#ff4d8d; margin:22px auto 0; }
+section { margin-bottom:42px; }
+h2 { font-weight:300; font-size:24px; letter-spacing:2.5px; text-transform:uppercase; }
+.sec-sub { color:#a7a7b3; font-weight:300; margin:6px 0 14px; font-size:14px; }
+.ev { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; padding:14px 0; border-top:1px solid #23232e; }
+.ev-name { font-size:16.5px; font-weight:500; }
+.ev-name-link { color:#f2f2f5; text-decoration:none; border-bottom:1px solid #ff4d8d; }
+.ev-desc-link { color:#8b8b98; text-decoration:none; }
+.ev-meta { color:#c9c9d2; font-weight:300; font-size:14px; margin-top:2px; }
+.ev-sub { color:#a7a7b3; font-weight:300; font-size:13.5px; margin-top:2px; }
+.ev-desc { color:#8b8b98; font-weight:300; font-size:13.5px; margin-top:5px; line-height:1.45; }
+.btn { flex:none; color:#ff4d8d; border:1px solid #ff4d8d; border-radius:999px; padding:6px 13px; font-size:13px; text-decoration:none; margin-top:2px; }
+.more { color:#8b8b98; font-size:13px; padding-top:10px; font-weight:300; }
+.app { text-align:center; border:1px solid #23232e; border-radius:16px; padding:30px 22px; }
+.app h2 { margin-bottom:8px; }
+.app p { color:#a7a7b3; font-weight:300; line-height:1.5; }
+.app .btn { display:inline-block; margin-top:16px; padding:10px 22px; font-size:14.5px; }
+footer { text-align:center; color:#5c5c68; font-size:12.5px; font-weight:300; margin-top:10px; }</style></head><body><div class="wrap">
+<header><img src="data:image/jpeg;base64,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" alt="Current logo">
+<h1>Current</h1><div class="tag">NYC events, every day. Friday, October 16, 2026.</div><div class="rule"></div></header>
+<section><h2>Tonight</h2><div class="sec-sub">Friday, October 16 — tap any event for its page</div><div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.eventbrite.com/e/jimmy-choo-sample-sale-tickets-1998393013298">Jimmy Choo Sample Sale</a></div>
+<div class="ev-meta">Metropolitan Pavilion (2nd Floor) · Chelsea</div><div class="ev-sub">Tue–Thu 9:00 AM–7:30 PM; Fri 9:00 AM–6:00 PM · free (registration required)</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.eventbrite.com/e/jimmy-choo-sample-sale-tickets-1998393013298">Men&#x27;s and women&#x27;s luxury footwear, handbags and accessories at sample-sale pricing. Free but registration required on Eventbrite (chicmi notes password FAIZ26).</a></div></div><a class="btn" href="https://www.eventbrite.com/e/jimmy-choo-sample-sale-tickets-1998393013298">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Diana Mahrach Sample Sale</div>
+<div class="ev-meta">Midtown</div>
+<div class="ev-desc">One-day sample sale listed on Eventbrite; details to confirm with the organizer.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Outdoor Voices Sample Sale</div>
+<div class="ev-meta">260 Final Sale</div><div class="ev-sub">free</div>
+<div class="ev-desc">Activewear, fleece and athleisure at deep discounts; organizer stories show items like fleece at $40.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">David Kennedy Cutler: Vessels</div>
+<div class="ev-meta">Derek Eller Gallery · Tribeca</div><div class="ev-sub">free</div>
+<div class="ev-desc">Solo presentation by David Kennedy Cutler in the gallery&#x27;s North Room. On view Oct 16 - Nov 14, 2026.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Dieu Donné Studio Day</div>
+<div class="ev-meta">Brooklyn Navy Yard</div><div class="ev-sub">2:00 PM</div>
+<div class="ev-desc">Open studio day at Dieu Donné, the hand papermaking art center in the Brooklyn Navy Yard.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">EJ Hauser: Sun Water Sky</div>
+<div class="ev-meta">Derek Eller Gallery · Tribeca</div><div class="ev-sub">6-8pm · free</div>
+<div class="ev-desc">Solo show of new paintings by EJ Hauser moving between abstraction and representation, combining repeated graphic motifs with gestural, poetic mark-making. The artist&#x27;s fourth solo exhibition with the gallery.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Sunset Park Open Studios</div>
+<div class="ev-meta"></div><div class="ev-sub">6:00 PM</div>
+<div class="ev-desc">Friday evening opening of Sunset Park&#x27;s open studios weekend.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.eventbrite.com/e/refuge-friday-agape-w-adam-x-fran-lf-frankie-bones-perc-cotton-tickets-2001796504231">Agapē x Refuge: Perc, Frankie Bones (60th bday), Adam X, Fran LF</a></div>
+<div class="ev-meta">Refuge, 366 Ten Eyck St, Brooklyn · East Williamsburg</div><div class="ev-sub">10pm-9am</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.eventbrite.com/e/refuge-friday-agape-w-adam-x-fran-lf-frankie-bones-perc-cotton-tickets-2001796504231">10pm-9am at Refuge.</a></div></div><a class="btn" href="https://www.eventbrite.com/e/refuge-friday-agape-w-adam-x-fran-lf-frankie-bones-perc-cotton-tickets-2001796504231">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://link.dice.fm/Yfd27564447c?dice_id=Yfd27564447c">Alex Wann (Halloween series)</a></div>
+<div class="ev-meta"></div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://link.dice.fm/Yfd27564447c?dice_id=Yfd27564447c">Alex Wann (Halloween series) — details in the linked Instagram post.</a></div></div><a class="btn" href="https://link.dice.fm/Yfd27564447c?dice_id=Yfd27564447c">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/reel/DeNRZsTiZ3T/">BeBop Poru w/ Mickey Perez</a></div>
+<div class="ev-meta">Friends &amp; Lovers (Brooklyn) · Brooklyn</div><div class="ev-sub">10pm-4am</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/reel/DeNRZsTiZ3T/">Weekly Friday party; 10pm-4am at Friends &amp; Lovers.</a></div></div><a class="btn" href="https://www.instagram.com/reel/DeNRZsTiZ3T/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DecFlwLEXcy/">Cath b2b EV, DJ JD b2b Chris Castaneda, Fulmer b2b Ray, Ana</a></div>
+<div class="ev-meta">Virgo, 324 Grand St · Lower East Side</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DecFlwLEXcy/">Friday lineup at Virgo.</a></div></div><a class="btn" href="https://www.instagram.com/p/DecFlwLEXcy/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DduEzMroA1F/">DJ_Dave Takeover</a></div>
+<div class="ev-meta">Elsewhere · Bushwick</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DduEzMroA1F/">Lineup update; Elsewhere members get free entry.</a></div></div><a class="btn" href="https://www.instagram.com/p/DduEzMroA1F/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DeNNs3Ix0Wy/">Dombresky</a></div>
+<div class="ev-meta">Marquee NY</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DeNNs3Ix0Wy/">Dombresky at Marquee NY.</a></div></div><a class="btn" href="https://www.instagram.com/p/DeNNs3Ix0Wy/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DdkadiuRQN8/">Dombresky @ Marquee</a></div>
+<div class="ev-meta">Marquee New York</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DdkadiuRQN8/">Dombresky @ Marquee at Marquee New York.</a></div></div><a class="btn" href="https://www.instagram.com/p/DdkadiuRQN8/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://link.dice.fm/N8fa44993a53">Enamour (Halloween series)</a></div>
+<div class="ev-meta"></div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://link.dice.fm/N8fa44993a53">Enamour (Halloween series) — details in the linked Instagram post.</a></div></div><a class="btn" href="https://link.dice.fm/N8fa44993a53">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/Dd9nMQNoEYL/">Enamour @ PUBLIC Hotel (Mirari Presents)</a></div>
+<div class="ev-meta">PUBLIC Hotel Artspace</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/Dd9nMQNoEYL/">Every Friday @ PUBLIC Hotel at PUBLIC Hotel Artspace.</a></div></div><a class="btn" href="https://www.instagram.com/p/Dd9nMQNoEYL/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Fleetmac Wood</div>
+<div class="ev-meta">House of Yes · Bushwick</div><div class="ev-sub">10:00 PM</div>
+<div class="ev-desc">Fleetwood Mac-themed club night at House of Yes in Bushwick, late night Friday.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://ra.co/events/2522240">Focus: Disco w/ Inés, Lovie &amp; Mark Grusane</a></div>
+<div class="ev-meta">Nowadays · Ridgewood</div><div class="ev-sub">10pm-close · $10 / $15</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://ra.co/events/2522240">10pm-close at Nowadays.</a></div></div><a class="btn" href="https://ra.co/events/2522240">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DeZ3aQoGnCn/">Friday Night at The DL</a></div>
+<div class="ev-meta">The DL · Lower East Side</div><div class="ev-sub">free</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DeZ3aQoGnCn/">Rooftop: Statik Selekt / itsanthonyvera; lounge: erikanthony_; first floor: _dj_kodak.</a></div></div><a class="btn" href="https://www.instagram.com/p/DeZ3aQoGnCn/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DdSDnDMGcJ0/">Friends In High Places: Season Finale w/ Alex Wann</a></div>
+<div class="ev-meta">Superior Ingredients Rooftop</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DdSDnDMGcJ0/">Venue moved from Westlight due to weather; rooftop heated &amp; enclosed; existing tickets valid.</a></div></div><a class="btn" href="https://www.instagram.com/p/DdSDnDMGcJ0/">Event page →</a></div><div class="more">+ 43 more in the full list</div></section>
+<section><h2>Saturday</h2><div class="sec-sub">October 17</div><div class="ev"><div class="ev-main"><div class="ev-name">Amazing Maize Maze: Flashlight Night</div>
+<div class="ev-meta">Queens County Farm Museum</div><div class="ev-sub">6:00-10:00 PM · $29</div>
+<div class="ev-desc">The farm&#x27;s Amazing Maize Maze opens for one flashlight-lit night; bring your own flashlight and pick a timed entry. Advance online ticket required; last entry 9:30pm.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Gowanus Open Studios</div>
+<div class="ev-meta"></div>
+<div class="ev-desc">Open studios weekend in Gowanus, October 17-18.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DeNNs3Ix0Wy/">@lohraspkansara x @nathanleongnyc</a></div>
+<div class="ev-meta">Marquee NY</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DeNNs3Ix0Wy/">@lohraspkansara x @nathanleongnyc at Marquee NY.</a></div></div><a class="btn" href="https://www.instagram.com/p/DeNNs3Ix0Wy/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/Decmga0oNMa/">Algo Riddim</a></div>
+<div class="ev-meta">Friends and Lovers BK</div><div class="ev-sub">10PM–late</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/Decmga0oNMa/">10PM–late; Epic B &amp; Uproot Andy — dancehall, dembow, afrobeats, reggaeton; RSVP in bio.</a></div></div><a class="btn" href="https://www.instagram.com/p/Decmga0oNMa/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DchI1Khybmj/">Avello (Halloween series)</a></div>
+<div class="ev-meta"></div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DchI1Khybmj/">Avello (Halloween series) — details in the linked Instagram post.</a></div></div><a class="btn" href="https://www.instagram.com/p/DchI1Khybmj/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/reel/DeGmjd2NxuD/">Back to the &#x27;80s Dance Party</a></div>
+<div class="ev-meta">The Delancey (main floor), 168 Delancey St · Lower East Side</div><div class="ev-sub">9:30pm · free</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/reel/DeGmjd2NxuD/">Weekly Saturdays 5-9:30pm at The Delancey.</a></div></div><a class="btn" href="https://www.instagram.com/reel/DeGmjd2NxuD/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://ra.co/events/2552757">Back to the Loft (UFeel)</a></div>
+<div class="ev-meta">New York (venue not stated — see post)</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://ra.co/events/2552757">Back to the Loft (UFeel) — venue not stated in the source listing.</a></div></div><a class="btn" href="https://ra.co/events/2552757">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DePVqWZlb6Q/">Brick Squad (Gucci Mane tribute)</a></div>
+<div class="ev-meta">Jolene Sound Room (@jolenesoundroom.bk) · Williamsburg</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DePVqWZlb6Q/">Sounds by Moochie, Classic New Wave, Freeohso; hosted by Ramaaaaa G, Swoope.</a></div></div><a class="btn" href="https://www.instagram.com/p/DePVqWZlb6Q/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Earlybirds Dance Party</div>
+<div class="ev-meta"></div><div class="ev-sub">6:00 PM</div>
+<div class="ev-desc">Saturday evening dance party in Williamsburg.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Emo Night Brooklyn: Halloween Edition</div>
+<div class="ev-meta">Brooklyn · Brooklyn</div>
+<div class="ev-desc">Emo Night Brooklyn throws a Halloween edition — emo anthems in costume.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DeZxy8OHMx1/">Family Biz (family dance party)</a></div>
+<div class="ev-meta">Friends &amp; Lovers (Brooklyn) · Brooklyn</div><div class="ev-sub">per person (kids under 1 free)</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DeZxy8OHMx1/">2-5pm daytime dance party for kids and grown-ups.</a></div></div><a class="btn" href="https://www.instagram.com/p/DeZxy8OHMx1/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://dice.fm/event/6ab1592d148319000178351e">GYALHATTAN: Dancehall/Hip-Hop Party</a></div>
+<div class="ev-meta">DELUXX FLUXX · East Village</div><div class="ev-sub">10PM–4AM · free</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://dice.fm/event/6ab1592d148319000178351e">10PM–4AM; DJs soundsofreality, gabsoul_, mohogany; hosted by notcrazyipromise; VIP/bottle service: NYVIP@deluxxfluxx.com.</a></div></div><a class="btn" href="https://dice.fm/event/6ab1592d148319000178351e">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">House of Flies Halloween Party</div>
+<div class="ev-meta"></div><div class="ev-sub">free</div>
+<div class="ev-desc">Free Halloween party in Bushwick.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://ra.co/events/2540593">HunnyBunny + Jeremy Giros</a></div>
+<div class="ev-meta">Jupiter Disco (Bushwick) · Bushwick</div><div class="ev-sub">9pm–4am · $10 advance / $15 door</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://ra.co/events/2540593">9pm–4am; free before 10pm at Jupiter Disco.</a></div></div><a class="btn" href="https://ra.co/events/2540593">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://tickets.taogroup.com/promoter/6ac8147b-1388-4a7f-8803-06520a1e63f2?utm_source=promoter&amp;utm_id=6ac8147b265c4cab9d8106520a1e63f2">LOCO Carnaval</a></div>
+<div class="ev-meta">Marquee New York</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://tickets.taogroup.com/promoter/6ac8147b-1388-4a7f-8803-06520a1e63f2?utm_source=promoter&amp;utm_id=6ac8147b265c4cab9d8106520a1e63f2">LohrasP x Nathan Leong; Jeff Salazar birthday.</a></div></div><a class="btn" href="https://tickets.taogroup.com/promoter/6ac8147b-1388-4a7f-8803-06520a1e63f2?utm_source=promoter&amp;utm_id=6ac8147b265c4cab9d8106520a1e63f2">Tickets →</a></div><div class="more">+ 37 more in the full list</div></section>
+<section><h2>Sunday</h2><div class="sec-sub">October 18</div><div class="ev"><div class="ev-main"><div class="ev-name">L&#x27;Agence Sample Sale</div>
+<div class="ev-meta">260 Sample Sale (NoMad) · NoMad</div><div class="ev-sub">free</div>
+<div class="ev-desc">Ready-to-wear for fall at sample-sale pricing; organizer notes everything is $250 and under.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Guest in Residence Sample Sale</div>
+<div class="ev-meta">260 Sample Sale (Lafayette) · Tribeca</div><div class="ev-sub">Doors open 11:00 AM · free</div>
+<div class="ev-desc">Fall knits and cashmere from the Gigi Hadid-founded label at sample pricing.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Gallery Dept. Sample Sale</div>
+<div class="ev-meta">West Village</div><div class="ev-sub">free</div>
+<div class="ev-desc">Sample sale from the LA streetwear label with apparel and accessories at sample pricing.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">James Perse Sample Sale</div>
+<div class="ev-meta">Chelsea Market (The Privé Sample Sale) · Chelsea</div><div class="ev-sub">free</div>
+<div class="ev-desc">Up to 70% off James Perse men&#x27;s and women&#x27;s apparel, accessories and home goods.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Windsor Jewelers Sample Sale</div>
+<div class="ev-meta">Soiffer Haskin · Chelsea</div><div class="ev-sub">free</div>
+<div class="ev-desc">Fine jewelry sample sale hosted at Soiffer Haskin.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DeaEAPzF4lz/">Beautiful Noise w/ SEVYN</a></div>
+<div class="ev-meta">Silence Please</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DeaEAPzF4lz/">Listening session; RSVP on Resident Advisor.</a></div></div><a class="btn" href="https://www.instagram.com/p/DeaEAPzF4lz/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://posh.vip/e/cuff-em-a-lover-girl-affair">CUFF &#x27;EM Party (Lover Girl dating party)</a></div>
+<div class="ev-meta">Pianos Mezzanine (58 Ludlow St, NYC)</div><div class="ev-sub">10pm–close</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://posh.vip/e/cuff-em-a-lover-girl-affair">10pm–close; dating party; DJs Dark Lotus, Mywai, Hotsuede (Hot Honey b2b Suedeheart).</a></div></div><a class="btn" href="https://posh.vip/e/cuff-em-a-lover-girl-affair">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/Dd6uW4GlDME/">Freestyle Night</a></div>
+<div class="ev-meta">Gabriela, 90 Wythe Ave, Brooklyn · Williamsburg</div><div class="ev-sub">doors 9pm</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/Dd6uW4GlDME/">Recurring Sunday night; doors 9pm; tickets in stories; posted 9/30 re: Oct 4 edition.</a></div></div><a class="btn" href="https://www.instagram.com/p/Dd6uW4GlDME/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/Dd5wT9qR2mK/">J-Pop Night</a></div>
+<div class="ev-meta">Kodansha House (508 W 37th St, Hudson Yards)</div><div class="ev-sub">6pm–9pm · free</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/Dd5wT9qR2mK/">6pm–9pm; DJ sets: ASTER, BUBUCORE, CUTE BOYS, GABBERT; presented by ISIDORE; flier in post carousel.</a></div></div><a class="btn" href="https://www.instagram.com/p/Dd5wT9qR2mK/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://ra.co/events/2535417">Sidera Invites: JESSXO, espurr, Brooke Steele, steele deficiency</a></div>
+<div class="ev-meta">Jupiter Disco (Bushwick) · Bushwick</div><div class="ev-sub">7pm–4am · free</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://ra.co/events/2535417">7pm–4am, free all night at Jupiter Disco.</a></div></div><a class="btn" href="https://ra.co/events/2535417">Tickets →</a></div><div class="more">+ 17 more in the full list</div></section>
+<section><h2>Free in NYC</h2><div class="sec-sub">The running free list — costs nothing, worth going to</div><div class="ev"><div class="ev-main"><div class="ev-name">Mielle Designer Outerwear Sample Sale</div>
+<div class="ev-meta">Mielle · Tribeca</div><div class="ev-sub">free</div>
+<div class="ev-desc">Long-running designer outerwear sale in SoHo, running through the end of the year.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Jamari Multi-Brand European Childrenswear Sample Sale</div>
+<div class="ev-meta">Jamari Showroom · Midtown</div><div class="ev-sub">free</div>
+<div class="ev-desc">Multi-brand European childrenswear sale at the Jamari showroom.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.eventbrite.com/e/jimmy-choo-sample-sale-tickets-1998393013298">Jimmy Choo Sample Sale</a></div>
+<div class="ev-meta">Metropolitan Pavilion (2nd Floor) · Chelsea</div><div class="ev-sub">Tue–Thu 9:00 AM–7:30 PM; Fri 9:00 AM–6:00 PM · free (registration required)</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.eventbrite.com/e/jimmy-choo-sample-sale-tickets-1998393013298">Men&#x27;s and women&#x27;s luxury footwear, handbags and accessories at sample-sale pricing. Free but registration required on Eventbrite (chicmi notes password FAIZ26).</a></div></div><a class="btn" href="https://www.eventbrite.com/e/jimmy-choo-sample-sale-tickets-1998393013298">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">L&#x27;Agence Sample Sale</div>
+<div class="ev-meta">260 Sample Sale (NoMad) · NoMad</div><div class="ev-sub">free</div>
+<div class="ev-desc">Ready-to-wear for fall at sample-sale pricing; organizer notes everything is $250 and under.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Guest in Residence Sample Sale</div>
+<div class="ev-meta">260 Sample Sale (Lafayette) · Tribeca</div><div class="ev-sub">Doors open 11:00 AM · free</div>
+<div class="ev-desc">Fall knits and cashmere from the Gigi Hadid-founded label at sample pricing.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Gallery Dept. Sample Sale</div>
+<div class="ev-meta">West Village</div><div class="ev-sub">free</div>
+<div class="ev-desc">Sample sale from the LA streetwear label with apparel and accessories at sample pricing.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">James Perse Sample Sale</div>
+<div class="ev-meta">Chelsea Market (The Privé Sample Sale) · Chelsea</div><div class="ev-sub">free</div>
+<div class="ev-desc">Up to 70% off James Perse men&#x27;s and women&#x27;s apparel, accessories and home goods.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Windsor Jewelers Sample Sale</div>
+<div class="ev-meta">Soiffer Haskin · Chelsea</div><div class="ev-sub">free</div>
+<div class="ev-desc">Fine jewelry sample sale hosted at Soiffer Haskin.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">David Kennedy Cutler: Vessels</div>
+<div class="ev-meta">Derek Eller Gallery · Tribeca</div><div class="ev-sub">free</div>
+<div class="ev-desc">Solo presentation by David Kennedy Cutler in the gallery&#x27;s North Room. On view Oct 16 - Nov 14, 2026.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">EJ Hauser: Sun Water Sky</div>
+<div class="ev-meta">Derek Eller Gallery · Tribeca</div><div class="ev-sub">6-8pm · free</div>
+<div class="ev-desc">Solo show of new paintings by EJ Hauser moving between abstraction and representation, combining repeated graphic motifs with gestural, poetic mark-making. The artist&#x27;s fourth solo exhibition with the gallery.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DeZ3aQoGnCn/">Friday Night at The DL</a></div>
+<div class="ev-meta">The DL · Lower East Side</div><div class="ev-sub">free</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DeZ3aQoGnCn/">Rooftop: Statik Selekt / itsanthonyvera; lounge: erikanthony_; first floor: _dj_kodak.</a></div></div><a class="btn" href="https://www.instagram.com/p/DeZ3aQoGnCn/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://dice.fm/event/6aa80b6c4526940001a51659">Nostalgia: 2010s Decade of Anthems</a></div>
+<div class="ev-meta">Deluxx Fluxx · East Village</div><div class="ev-sub">10pm-4am · Free RSVP</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://dice.fm/event/6aa80b6c4526940001a51659">10pm-4am; DJs Zoe777, Callib, Tone Experience.</a></div></div><a class="btn" href="https://dice.fm/event/6aa80b6c4526940001a51659">Tickets →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">SBSOUNDS LIVE: Reggae, Dancehall &amp; Throwbacks</div>
+<div class="ev-meta">The Se7en</div><div class="ev-sub">9:00 PM-2:00 AM · free</div>
+<div class="ev-desc">The SB SOUNDS DJ duo plays reggae, dancehall, and classic R&amp;B/hip-hop throwbacks at The Se7en in Brooklyn on Friday night. Free entry, no cover.</div></div></div>
+<div class="ev"><div class="ev-main"><div class="ev-name"><a class="ev-name-link" href="https://www.instagram.com/p/DdcVaV6SxKo/">Statik Selektah</a></div>
+<div class="ev-meta">The DL, 95 Delancey St · Lower East Side</div><div class="ev-sub">free RSVP</div>
+<div class="ev-desc"><a class="ev-desc-link" href="https://www.instagram.com/p/DdcVaV6SxKo/">12-2am set; 21+ at The DL.</a></div></div><a class="btn" href="https://www.instagram.com/p/DdcVaV6SxKo/">Event page →</a></div>
+<div class="ev"><div class="ev-main"><div class="ev-name">Hallowscream Fright Walk</div>
+<div class="ev-meta"></div><div class="ev-sub">free</div>
+<div class="ev-desc">Free Halloween fright walk in Washington Heights, October 16-17.</div></div></div><div class="more">+ 196 more in the full list</div></section>
+<section><h2>Just opened</h2><div class="sec-sub">New rooms, verified</div><div class="ev"><div class="ev-main"><div class="ev-name">Boogie Lab</div>
+<div class="ev-meta">Bar · Inwood</div>
+<div class="ev-sub">Opened: 2026-10-15 · Opened</div></div></div><div class="ev"><div class="ev-main"><div class="ev-name">Humm</div>
+<div class="ev-meta">Restaurant · West Village</div>
+<div class="ev-sub">Opened: 2026-10-10 · Opened</div></div></div><div class="ev"><div class="ev-main"><div class="ev-name">Bar Viv</div>
+<div class="ev-meta">Bar · Upper West Side</div>
+<div class="ev-sub">Opened: 2026-10-08 · Opened</div></div></div><div class="ev"><div class="ev-main"><div class="ev-name">Good Company</div>
+<div class="ev-meta">Restaurant · SoHo</div>
+<div class="ev-sub">Opened: 2026-10-08 · Opened</div></div></div><div class="ev"><div class="ev-main"><div class="ev-name">Bun Mee</div>
+<div class="ev-meta">Restaurant · Flatiron</div>
+<div class="ev-sub">Opened: 2026-10-08 · Opened</div></div></div><div class="ev"><div class="ev-main"><div class="ev-name">iara</div>
+<div class="ev-meta">Restaurant · Lower East Side</div>
+<div class="ev-sub">Opened: October 2026 · Opened</div></div></div></section>
+<section><h2>Last chances</h2><div class="sec-sub">Closing — see them before they're gone</div><div class="ev"><div class="ev-main"><div class="ev-name">Music Hall of Williamsburg</div>
+<div class="ev-meta">Music Venue · Williamsburg</div>
+<div class="ev-sub">Date: 2026-12-31 · Closing Dec 31, 2026</div></div></div><div class="ev"><div class="ev-main"><div class="ev-name">Scruffy Duffy&#x27;s</div>
+<div class="ev-meta">Bar · Hell&#x27;s Kitchen</div>
+<div class="ev-sub">Date: 2026-11-29 · Closing Nov 29, 2026</div></div></div><div class="ev"><div class="ev-main"><div class="ev-name">Justine&#x27;s on Hudson</div>
+<div class="ev-meta">Restaurant · West Village</div>
+<div class="ev-sub">Date: 2026-10-17 · Closed</div></div></div><div class="ev"><div class="ev-main"><div class="ev-name">Wayward Fare</div>
+<div class="ev-meta">Restaurant · Prospect Heights</div>
+<div class="ev-sub">Date: October 2026 · Closed</div></div></div><div class="ev"><div class="ev-main"><div class="ev-name">Potenza Centrale</div>
+<div class="ev-meta">Restaurant · East Village</div>
+<div class="ev-sub">Date: October 2026 · Closed</div></div></div><div class="ev"><div class="ev-main"><div class="ev-name">Holy Burger</div>
+<div class="ev-meta">Restaurant · East Village</div>
+<div class="ev-sub">Date: October 2026 · Closed</div></div></div></section>
+<div class="app"><h2>The app is coming</h2><p>Current, the app — every event in the city, one list.<br>Join the waitlist and be first in.</p>
+<a class="btn" href="mailto:streamofscene@gmail.com?subject=Current%20NYC%20app%20—%20waitlist">Join the waitlist</a></div>
+<footer>@nyc.current · Updated daily · Live stream of the scene</footer>
+</div></body></html>
