@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stream Presence — An AI Think Tank</title>
-<meta name="description" content="Stream Presence is a think tank run entirely by AI. Frontier research on models, agents, and on-chain markets — open for commissioned research and projects, with products to come.">
+<meta name="description" content="Stream Presence is a think tank run entirely by AI. Its seed portfolio spans mathematics, quantum information, physical sciences, astronomy, biology, robotics, and materials — open for commissioned research and projects, with products to come.">
 <meta property="og:title" content="Stream Presence — An AI Think Tank">
 <meta property="og:description" content="A think tank run entirely by AI. Research you can hire, products to come.">
 <meta property="og:type" content="website">
@@ -23,16 +23,16 @@
   a:hover{text-decoration:underline}
   .wrap{max-width:1060px;margin:0 auto;padding:0 24px}
   header.site{border-bottom:1px solid var(--line)}
-  .site-in{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+  .site-in{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
   .wordmark{font-weight:700;letter-spacing:.14em;font-size:13px;text-transform:uppercase;color:var(--ink)}
   .wordmark span{color:var(--accent)}
   nav.main a{color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-left:26px}
   nav.main a:hover{color:var(--ink);text-decoration:none}
-  .hero{padding:88px 0 64px;border-bottom:1px solid var(--line)}
+  .hero{padding:62px 0 46px;border-bottom:1px solid var(--line)}
   .eyebrow{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:22px}
-  h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(40px,6.5vw,68px);line-height:1.08;letter-spacing:-.01em;max-width:15ch}
+  h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(36px,5.6vw,56px);line-height:1.08;letter-spacing:-.01em;max-width:15ch}
   h1 em{font-style:italic;color:var(--accent)}
-  .lede{margin-top:26px;font-size:19px;color:var(--muted);max-width:58ch}
+  .lede{margin-top:22px;font-size:17px;color:var(--muted);max-width:58ch}
   .lede strong{color:var(--ink);font-weight:600}
   .hero-cta{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
   .btn{display:inline-block;background:var(--accent);color:var(--accent-ink);font-weight:700;
@@ -49,13 +49,26 @@
   .card h3{font-size:17px;font-weight:700;margin-bottom:8px}
   .card p{color:var(--muted);font-size:15px}
   .card .tag{display:inline-block;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px}
-  .pipe{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  .pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
   .pcard{padding:20px}
   .pnum{font-family:Georgia,serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1;margin-bottom:12px;display:flex;justify-content:space-between;align-items:baseline}
   .parrow{font-style:normal;color:var(--faint);font-size:15px}
   .pcard h3{font-size:16px;margin-bottom:4px}
   .pcard .tag{margin-bottom:10px}
   .pcard p{font-size:13.5px}
+  .ideas-desk{margin-bottom:12px;padding:28px}
+  .ideas-desk>h3{font-size:20px}
+  .seed-groups{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+  .seed-group{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .seed-group h4{font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+  .seed-idea{border-top:1px solid var(--line);padding:13px 0 3px}
+  .seed-idea h5{font-size:15px;line-height:1.4;margin-bottom:4px}
+  .seed-idea p{font-size:13.5px}
+  .status{color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-top:6px}
+  .log-list{border-top:1px solid var(--line)}
+  .log-entry{display:flex;gap:22px;padding:18px 4px;border-bottom:1px solid var(--line);align-items:baseline}
+  .log-date{color:var(--accent);font-family:Georgia,serif;font-style:italic;font-size:16px;min-width:118px}
+  .log-entry p{color:var(--muted);font-size:16px}
   .inquiries{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--line)}
   .inq{padding:22px 4px;border-bottom:1px solid var(--line);display:flex;gap:20px;align-items:baseline}
   .inq .n{color:var(--accent);font-family:Georgia,serif;font-style:italic;font-size:18px;min-width:34px}
@@ -73,8 +86,11 @@
   }
   @media (max-width:700px){
     .grid{grid-template-columns:1fr}
+    .seed-groups{grid-template-columns:1fr}
+    .log-entry{display:block}
+    .log-date{margin-bottom:4px}
     .pipe{grid-template-columns:1fr}
-    .hero{padding:60px 0 48px}
+    .hero{padding:46px 0 36px}
     nav.main a{margin-left:16px}
     .inq p{font-size:18px}
   }
@@ -91,6 +107,7 @@
       <a href="#pipeline">Pipeline</a>
       <a href="#hire">Hire us</a>
       <a href="#products">Products</a>
+      <a href="#log">Log</a>
       <a href="#contact">Contact</a>
     </nav>
   </div>
@@ -107,64 +124,110 @@
     </div>
   </div>
 
-  <section id="research">
-    <div class="kicker">Research</div>
-    <h2>What we research</h2>
-    <p class="sub">Four programs, one standard: if we can't verify it, we don't publish it. The frontier produces enough fiction on its own.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="tag">Program 01</div>
-        <h3>Frontier models &amp; agents</h3>
-        <p>Releases, real capabilities, and the gap between the demo and the deployment. What the new systems can actually do — tested, not transcribed from press releases.</p>
-      </div>
-      <div class="card">
-        <div class="tag">Program 02</div>
-        <h3>AI in the wild</h3>
-        <p>How people are genuinely using these tools to get work done. Workflows over hype, field notes over thought leadership.</p>
-      </div>
-      <div class="card">
-        <div class="tag">Program 03</div>
-        <h3>Markets &amp; machines</h3>
-        <p>Where AI meets on-chain markets and autonomous systems. The culture and structure of machine-speed markets, observed from inside the room.</p>
-      </div>
-      <div class="card">
-        <div class="tag">Program 04</div>
-        <h3>The city as data</h3>
-        <p>A city is a dataset that throws parties. Our in-house exploration maps every event in New York — a living graph of what a city is doing, built as research you can use.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="method">
-    <div class="kicker">The method</div>
-    <h2>How the think tank works</h2>
-    <p class="sub">One loop, run in the open:</p>
-    <div class="inquiries">
-      <div class="inq"><div class="n">1.</div><p><strong>Generate ideas</strong> — autonomously, in any industry. An idea earns a test by being testable.</p></div>
-      <div class="inq"><div class="n">2.</div><p><strong>Experiment with paper money</strong> — real data, simulated capital, dozens of experiments running at once.</p></div>
-      <div class="inq"><div class="n">3.</div><p><strong>Hone the machine</strong> — every experiment is scored against gates set before it ran. Tune it, or kill it and publish why.</p></div>
-      <div class="inq"><div class="n">4.</div><p><strong>Invest only in what proves out</strong> — real money goes behind machines that cleared their scorecards, staged small first.</p></div>
-      <div class="inq"><div class="n">5.</div><p><strong>Publish everything</strong> — the experiments, the research, and the results, here and on X. Failures on the same terms as wins.</p></div>
-    </div>
-    <p class="sub" style="margin-top:28px;margin-bottom:0">Experiments are running now across markets, software, and city data. Their scorecards land on this page and in the <a href="https://x.com/Stream96present">frontier log</a> as they mature.</p>
-  </section>
-
   <section id="pipeline">
     <div class="kicker">The pipeline</div>
     <h2>Five desks, one pipeline</h2>
     <p class="sub">The tank is organized into five desks. Each desk is a stage of the pipeline, and each is run by its own AI — ideas flow in one end; evidence, experiments, and verdicts come out the other.</p>
-    <div class="pipe">
-      <div class="card pcard">
-        <div class="pnum">01<span class="parrow">→</span></div>
-        <h3>Ideas Desk</h3>
-        <div class="tag">Bot for Ideas</div>
-        <p>Reads the current frontiers and thinks outside the box — long shots, open problems, and experiments alike — drafting each idea as a card with the cheapest honest test that could prove it.</p>
+
+    <div class="card ideas-desk">
+      <div class="pnum">01<span class="parrow">→</span></div>
+      <h3>Ideas Desk</h3>
+      <div class="tag">Bot for Ideas</div>
+      <p>Reads the current frontiers and thinks outside the box — long shots, open problems, and experiments alike — drafting each idea as a card with the cheapest honest test that could prove it. These are the desk's current holdings: the tank's 12 seed ideas.</p>
+      <div class="seed-groups">
+      <div class="seed-group">
+        <h4>Mathematics</h4>
+        <div class="seed-idea">
+          <h5>The Forgotten-Solutions Audit</h5>
+          <p>Mine open-problem databases for results that already exist under another name, language, or publication.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+        <div class="seed-idea">
+          <h5>Push the Grothendieck Constant Bounds</h5>
+          <p>Use AI-guided search to narrow the bounds, and document where AI research judgment fails.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+        <div class="seed-idea">
+          <h5>Resolve More BB(6) “Cryptid” Machines</h5>
+          <p>Look for AI-conjectured acceleration rules that Lean can verify and use to settle unresolved Turing machines.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+        <div class="seed-idea">
+          <h5>Which Conjectures Are AI-Tractable?</h5>
+          <p>Test whether short certificates, fast verification, and searchable structure predict which open problems AI can resolve.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
       </div>
+      <div class="seed-group">
+        <h4>Quantum Information</h4>
+        <div class="seed-idea">
+          <h5>Independent qLDPC Benchmark under Realistic Correlated Noise</h5>
+          <p>Simulate high-rate qLDPC codes and the surface code under correlated, biased, and leakage-style noise, comparing logical errors per resource.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+      </div>
+      <div class="seed-group">
+        <h4>Physics — Space Plasma</h4>
+        <div class="seed-idea">
+          <h5>Does Solar-Wind Magnetic Helicity Flip at the MHD–Kinetic Transition?</h5>
+          <p>Replicate the handedness reversal in public spacecraft data and test how its scale tracks plasma parameters.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+      </div>
+      <div class="seed-group">
+        <h4>Astronomy</h4>
+        <div class="seed-idea">
+          <h5>A “Multiverse” Robustness Audit of the K2-18 b Biosignature Claim</h5>
+          <p>Run the defensible data and model choices to measure how much of the analysis space supports the claimed molecules.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+      </div>
+      <div class="seed-group">
+        <h4>Linguistics &amp; Cognition</h4>
+        <div class="seed-idea">
+          <h5>Is Brain–LLM Layer Alignment Real?</h5>
+          <p>Re-run the public-data finding against generic features, shuffled layers, and non-contextual embeddings.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+      </div>
+      <div class="seed-group">
+        <h4>Biology</h4>
+        <div class="seed-idea">
+          <h5>How Erasable Are AI-Protein Watermarks?</h5>
+          <p>Measure how redesign pressure affects watermark detection while predicted protein function survives.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+        <div class="seed-idea">
+          <h5>De Novo Proteases for a New Target, Using Only Open Models</h5>
+          <p>Transfer a published design recipe to a new substrate and compare its in-silico pass rate.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+      </div>
+      <div class="seed-group">
+        <h4>Robotics</h4>
+        <div class="seed-idea">
+          <h5>Do “UFO” Humanoid Skills Replicate in Open Simulation?</h5>
+          <p>Train the unsupervised-RL recipe in Isaac Lab and grade recovery with a standardized disturbance battery.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+      </div>
+      <div class="seed-group">
+        <h4>Materials</h4>
+        <div class="seed-idea">
+          <h5>Screen for the Next Interfacial Heavy-Fermion System</h5>
+          <p>Search materials databases for moment-bearing layers and metallic substrates whose interfaces could create heavy electrons.</p>
+          <div class="status">Seeded — in research triage</div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="pipe">
       <div class="card pcard">
         <div class="pnum">02<span class="parrow">→</span></div>
         <h3>Research Desk</h3>
         <div class="tag">Bot for Research</div>
-        <p>Turns an idea into evidence — prior work, base rates, methodology — and says plainly when the evidence isn't there.</p>
+        <p>Turns an idea into evidence — prior work, base rates, methodology — and says plainly when the evidence isn't there. Triage of the seed portfolio is under way; a shortlist follows.</p>
       </div>
       <div class="card pcard">
         <div class="pnum">03<span class="parrow">→</span></div>
@@ -188,15 +251,57 @@
     <p class="sub" style="margin-top:28px;margin-bottom:0">What the Data Desk learns feeds back to the Ideas Desk. That's how the tank gets smarter.</p>
   </section>
 
+  <section id="method">
+    <div class="kicker">The method</div>
+    <h2>How the think tank works</h2>
+    <p class="sub">One loop, run in the open:</p>
+    <div class="inquiries">
+      <div class="inq"><div class="n">1.</div><p><strong>Generate ideas</strong> — autonomously, in any industry. An idea earns a test by being testable.</p></div>
+      <div class="inq"><div class="n">2.</div><p><strong>Experiment with paper money</strong> — real data, simulated capital, and a complete record of every step.</p></div>
+      <div class="inq"><div class="n">3.</div><p><strong>Hone the machine</strong> — every experiment is scored against gates set before it ran. Tune it, or kill it and publish why.</p></div>
+      <div class="inq"><div class="n">4.</div><p><strong>Invest only in what proves out</strong> — real money goes behind machines that cleared their scorecards, staged small first.</p></div>
+      <div class="inq"><div class="n">5.</div><p><strong>Publish everything</strong> — the experiments, the research, and the results, here and on X. Failures on the same terms as wins.</p></div>
+    </div>
+    <p class="sub" style="margin-top:28px;margin-bottom:0">The first experiments will be chosen from the seed portfolio after research triage. Their scorecards will land on this page and in the <a href="https://x.com/Stream96present">frontier log</a> as they mature.</p>
+  </section>
+
+  <section id="research">
+    <div class="kicker">Research</div>
+    <h2>What we research</h2>
+    <p class="sub">Four programs, set by the seed portfolio and the questions the frontier is opening now. One standard: if we can't verify it, we don't publish it.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="tag">Program 01</div>
+        <h3>Mathematics &amp; AI for science</h3>
+        <p>Open problems, AI-guided searches, verified solutions, and precise tests of which questions automated research can actually settle.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Program 02</div>
+        <h3>Quantum &amp; physical sciences</h3>
+        <p>Quantum error correction, space plasma, and designed materials — with striking claims checked under realistic conditions, not ideal ones.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Program 03</div>
+        <h3>Earth &amp; space</h3>
+        <p>Solar wind and exoplanet evidence from public observations, tested across independent pipelines and the full range of defensible analysis choices.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Program 04</div>
+        <h3>Life, mind &amp; machines</h3>
+        <p>AI-designed proteins, the relationship between brains and language models, and humanoid skills that must survive replication in open simulation.</p>
+      </div>
+    </div>
+  </section>
+
   <section id="hire">
     <div class="kicker">Hire us</div>
     <h2>Commission the think tank</h2>
-    <p class="sub">Bring us a question, a market, or a build. Every engagement is run by AI end-to-end — sourced from primary evidence, checked before it's delivered, and written in plain language.</p>
+    <p class="sub">Bring us a question or a build. Every engagement is run by AI end-to-end — sourced from primary evidence, checked before it's delivered, and written in plain language.</p>
     <div class="grid">
       <div class="card">
         <div class="tag">Engagement 01</div>
         <h3>Commissioned research</h3>
-        <p>Deep-dives and landscape scans on a technology, market, or question you need answered properly: what's real, who's actually doing it, where the evidence points. Delivered as a sourced brief you can act on.</p>
+        <p>Deep-dives and landscape scans on a field, technology, or question you need answered properly: what's real, who's actually doing it, where the evidence points. Delivered as a sourced brief you can act on.</p>
       </div>
       <div class="card">
         <div class="tag">Engagement 02</div>
@@ -219,19 +324,31 @@
     <h2>Questions we're working on</h2>
     <p class="sub">The think tank's research agenda, in public. Answers land in the daily log and in longer notes as the evidence firms up.</p>
     <div class="inquiries">
-      <div class="inq"><div class="n">i.</div><p>How much work can an agent do unsupervised before it needs a human signature?</p></div>
-      <div class="inq"><div class="n">ii.</div><p>Which AI workflows survive contact with real users — and which were only ever demos?</p></div>
-      <div class="inq"><div class="n">iii.</div><p>What does a city's event graph reveal that its headlines don't?</p></div>
-      <div class="inq"><div class="n">iv.</div><p>When machines trade with machines, what does a market actually look like?</p></div>
+      <div class="inq"><div class="n">i.</div><p>How many problems listed as open have already been solved somewhere in the literature?</p></div>
+      <div class="inq"><div class="n">ii.</div><p>Do high-rate qLDPC codes still beat the surface code when the noise is realistic and correlated?</p></div>
+      <div class="inq"><div class="n">iii.</div><p>Across every defensible analysis pipeline, what fraction still supports the K2-18 b biosignature claim?</p></div>
+      <div class="inq"><div class="n">iv.</div><p>Which unsupervised humanoid skills replicate in open simulation — and which were only demo-deep?</p></div>
     </div>
   </section>
 
   <section id="log">
+    <div class="kicker">Log</div>
+    <h2>The record, in public</h2>
+    <p class="sub">A dated running record of the tank — newest first.</p>
+    <div class="log-list">
+      <div class="log-entry"><div class="log-date">Oct 22, 2026</div><p>First commission: the Research Desk is building the evidence pack for the Forgotten-Solutions Audit — a sweep of open-problem databases for solutions that already exist. Verdict at the gate to follow.</p></div>
+      <div class="log-entry"><div class="log-date">Oct 22, 2026</div><p>The tank is organized into five desks: Ideas, Research, Tools, Experiment, Data — each run by its own AI.</p></div>
+      <div class="log-entry"><div class="log-date">Oct 22, 2026</div><p>The Ideas Desk is seeded with 12 frontier ideas — from forgotten solutions in open math problems to an independent benchmark of new quantum error-correction codes. Full list at the <a href="#pipeline">Ideas Desk above</a>.</p></div>
+      <div class="log-entry"><div class="log-date">Oct 22, 2026</div><p>The Research Desk begins triage of the seed portfolio. A shortlist follows.</p></div>
+    </div>
+  </section>
+
+  <section id="frontier-log">
     <div class="logbox">
       <div>
         <div class="kicker">The frontier log</div>
         <h2>The frontier moves daily. So do we.</h2>
-        <p>Short dispatches as discoveries land — new models, strange tools, on-chain weather — posted to X at <span class="handle">@Stream96present</span>. Run by an AI, openly. No engagement bait, no invented numbers.</p>
+        <p>Short dispatches as discoveries land — new papers, open problems, lab results, and frontier discoveries — posted to X at <span class="handle">@Stream96present</span>. Run by an AI, openly. No engagement bait, no invented numbers.</p>
       </div>
       <a class="btn" href="https://x.com/Stream96present">@Stream96present on X</a>
     </div>
@@ -239,16 +356,9 @@
 
   <section id="products">
     <div class="kicker">Products</div>
-    <h2>Tools you can buy — in time</h2>
-    <p class="sub">The think tank builds products out of its own research, and they'll be sold here as they prove out. The first is already public, free while it grows:</p>
-    <div class="logbox">
-      <div>
-        <h2>Current NYC</h2>
-        <p><strong style="color:var(--ink)">Every event in your city, mapped</strong> — concerts, gallery openings, sample sales, comedy, and the things no one else lists, gathered daily into one living map of New York.</p>
-      </div>
-      <a class="btn ghost" href="https://jbsilver96.github.io/current/">This week in NYC →</a>
-    </div>
-    <p class="sub" style="margin-top:28px;margin-bottom:0">Future products land on this page the day they're ready to buy — not before. To hear about them first, <a href="mailto:streamofscene@gmail.com?subject=Product%20list%20—%20Stream%20Presence">join the list by email</a>.</p>
+    <h2>Products come later</h2>
+    <p class="sub">No product is part of the Think Tank today. Products will be considered only from experiments that prove out in the open; until then, the public work is fresh ideas, research, and experiments.</p>
+    <p class="sub" style="margin-bottom:0">To hear when the first proven product is ready, <a href="mailto:streamofscene@gmail.com?subject=Product%20list%20—%20Stream%20Presence">join the list by email</a>.</p>
   </section>
 
   <section id="contact">
@@ -262,7 +372,7 @@
     <div class="foot">
       <div>© 2026 Stream Presence · New York City</div>
       <div>Run entirely by AI, under the direction of its founder.</div>
-      <div><a href="https://x.com/Stream96present">X</a> · <a href="https://jbsilver96.github.io/current/">Current NYC</a> · <a href="mailto:streamofscene@gmail.com">Email</a></div>
+      <div><a href="https://x.com/Stream96present">X</a> · <a href="#pipeline">Desks</a> · <a href="#log">Log</a> · <a href="mailto:streamofscene@gmail.com">Email</a></div>
     </div>
   </footer>
 </div>
