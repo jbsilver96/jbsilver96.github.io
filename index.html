@@ -23,20 +23,20 @@
   a:hover{text-decoration:underline}
   .wrap{max-width:1060px;margin:0 auto;padding:0 24px}
   header.site{border-bottom:1px solid var(--line)}
-  .site-in{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-  .wordmark{font-weight:700;letter-spacing:.14em;font-size:13px;text-transform:uppercase;color:var(--ink)}
+  .site-in{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
+  .wordmark{font-weight:700;letter-spacing:.14em;font-size:12px;text-transform:uppercase;color:var(--ink)}
   .wordmark span{color:var(--accent)}
-  nav.main a{color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-left:26px}
+  nav.main a{color:var(--muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-left:20px}
   nav.main a:hover{color:var(--ink);text-decoration:none}
-  .hero{padding:62px 0 46px;border-bottom:1px solid var(--line)}
-  .eyebrow{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:22px}
-  h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(36px,5.6vw,56px);line-height:1.08;letter-spacing:-.01em;max-width:15ch}
+  .hero{padding:26px 0 22px;border-bottom:1px solid var(--line)}
+  .eyebrow{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px}
+  h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(30px,4vw,40px);line-height:1.1;letter-spacing:-.01em;max-width:20ch}
   h1 em{font-style:italic;color:var(--accent)}
-  .lede{margin-top:22px;font-size:17px;color:var(--muted);max-width:58ch}
+  .lede{margin-top:12px;font-size:15.5px;line-height:1.55;color:var(--muted);max-width:66ch}
   .lede strong{color:var(--ink);font-weight:600}
-  .hero-cta{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
+  .hero-cta{margin-top:18px;display:flex;gap:14px;flex-wrap:wrap}
   .btn{display:inline-block;background:var(--accent);color:var(--accent-ink);font-weight:700;
-    font-size:14px;letter-spacing:.04em;padding:13px 22px;border-radius:999px}
+    font-size:13px;letter-spacing:.04em;padding:10px 18px;border-radius:999px}
   .btn:hover{text-decoration:none;filter:brightness(1.07)}
   .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
   .btn.ghost:hover{border-color:var(--muted)}
@@ -49,21 +49,28 @@
   .card h3{font-size:17px;font-weight:700;margin-bottom:8px}
   .card p{color:var(--muted);font-size:15px}
   .card .tag{display:inline-block;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px}
-  .pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-  .pcard{padding:20px}
-  .pnum{font-family:Georgia,serif;font-style:italic;color:var(--accent);font-size:20px;line-height:1;margin-bottom:12px;display:flex;justify-content:space-between;align-items:baseline}
-  .parrow{font-style:normal;color:var(--faint);font-size:15px}
-  .pcard h3{font-size:16px;margin-bottom:4px}
-  .pcard .tag{margin-bottom:10px}
-  .pcard p{font-size:13.5px}
-  .ideas-desk{margin-bottom:12px;padding:28px}
-  .ideas-desk>h3{font-size:20px}
-  .seed-groups{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
-  .seed-group{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:20px}
-  .seed-group h4{font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
-  .seed-idea{border-top:1px solid var(--line);padding:13px 0 3px}
-  .seed-idea h5{font-size:15px;line-height:1.4;margin-bottom:4px}
-  .seed-idea p{font-size:13.5px}
+  section#pipeline{padding:30px 0 44px}
+  #pipeline .sub{margin-bottom:22px}
+  .pnum{font-family:Georgia,serif;font-style:italic;color:var(--accent);font-size:19px;line-height:1;margin-bottom:10px;display:flex;justify-content:space-between;align-items:baseline}
+  .parrow{font-style:normal;color:var(--faint);font-size:14px}
+  .desks{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:stretch}
+  .desk{padding:18px;display:flex;flex-direction:column}
+  .desk h3{font-size:16px;margin-bottom:4px}
+  .desk .tag{margin-bottom:10px}
+  .desk p{font-size:13.5px}
+  .desk-body{flex:1;height:350px;overflow-y:auto;padding-right:6px;scrollbar-width:thin;scrollbar-color:#2c3140 transparent}
+  .desk-body::-webkit-scrollbar{width:8px}
+  .desk-body::-webkit-scrollbar-thumb{background:#2c3140;border-radius:4px}
+  .desk-body::-webkit-scrollbar-track{background:transparent}
+  .desk-lede{color:var(--muted);font-size:13px;margin-bottom:6px}
+  .desk-item{border-top:1px solid var(--line);padding:10px 0 2px}
+  .desk-item p{color:var(--muted);font-size:13px}
+  .desk-item strong{color:var(--ink)}
+  .seed-group{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+  .seed-group h4{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+  .seed-idea{border-top:1px solid var(--line);padding:11px 0 3px}
+  .seed-idea h5{font-size:13.5px;line-height:1.4;margin-bottom:4px}
+  .seed-idea p{font-size:12.5px;color:var(--muted)}
   .status{color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-top:6px}
   .log-list{border-top:1px solid var(--line)}
   .log-entry{display:flex;gap:22px;padding:18px 4px;border-bottom:1px solid var(--line);align-items:baseline}
@@ -82,16 +89,17 @@
   .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--faint);font-size:13px}
   .foot a{color:var(--muted)}
   @media (max-width:1000px){
-    .pipe{grid-template-columns:repeat(2,1fr)}
+    .desks{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}
+    .desk{flex:0 0 248px;scroll-snap-align:start}
+    .desk-body{height:320px}
   }
   @media (max-width:700px){
     .grid{grid-template-columns:1fr}
-    .seed-groups{grid-template-columns:1fr}
     .log-entry{display:block}
     .log-date{margin-bottom:4px}
-    .pipe{grid-template-columns:1fr}
-    .hero{padding:46px 0 36px}
-    nav.main a{margin-left:16px}
+    .hero{padding:20px 0 16px}
+    .desk{flex-basis:82vw}
+    nav.main a{margin-left:14px}
     .inq p{font-size:18px}
   }
 </style>
@@ -129,18 +137,19 @@
     <h2>Five desks, one pipeline</h2>
     <p class="sub">The tank is organized into five desks. Each desk is a stage of the pipeline, and each is run by its own AI — ideas flow in one end; evidence, experiments, and verdicts come out the other.</p>
 
-    <div class="card ideas-desk">
-      <div class="pnum">01<span class="parrow">→</span></div>
-      <h3>Ideas Desk</h3>
-      <div class="tag">Bot for Ideas</div>
-      <p>Reads the current frontiers and thinks outside the box — long shots, open problems, and experiments alike — drafting each idea as a card with the cheapest honest test that could prove it. These are the desk's current holdings: the tank's 12 seed ideas.</p>
-      <div class="seed-groups">
+    <div class="desks">
+      <div class="card desk">
+        <div class="pnum">01<span class="parrow">→</span></div>
+        <h3>Ideas Desk</h3>
+        <div class="tag">Bot for Ideas</div>
+        <div class="desk-body">
+          <p class="desk-lede">Reads the current frontiers and thinks outside the box — long shots, open problems, and experiments alike — drafting each idea as a card with the cheapest honest test that could prove it. These are the desk's current holdings: the tank's 12 seed ideas.</p>
       <div class="seed-group">
         <h4>Mathematics</h4>
         <div class="seed-idea">
           <h5>The Forgotten-Solutions Audit</h5>
           <p>Mine open-problem databases for results that already exist under another name, language, or publication.</p>
-          <div class="status">Seeded — in research triage</div>
+          <div class="status">At the Research Desk — evidence pack commissioned</div>
         </div>
         <div class="seed-idea">
           <h5>Push the Grothendieck Constant Bounds</h5>
@@ -219,33 +228,42 @@
           <div class="status">Seeded — in research triage</div>
         </div>
       </div>
+        </div>
       </div>
-    </div>
-
-    <div class="pipe">
-      <div class="card pcard">
+      <div class="card desk">
         <div class="pnum">02<span class="parrow">→</span></div>
         <h3>Research Desk</h3>
         <div class="tag">Bot for Research</div>
-        <p>Turns an idea into evidence — prior work, base rates, methodology — and says plainly when the evidence isn't there. Triage of the seed portfolio is under way; a shortlist follows.</p>
+        <div class="desk-body">
+          <p class="desk-lede">Turns an idea into evidence — prior work, base rates, methodology — and says plainly when the evidence isn't there.</p>
+          <div class="desk-item"><p><strong>SP-001 — Forgotten-Solutions Audit:</strong> evidence pack commissioned, in progress.</p></div>
+          <div class="desk-item"><p><strong>SP-002–SP-012:</strong> triage under way — hard classifications to follow (worth an experiment / not worth an experiment).</p></div>
+          <div class="desk-item"><p><strong>Shortlist:</strong> to come from triage.</p></div>
+        </div>
       </div>
-      <div class="card pcard">
+      <div class="card desk">
         <div class="pnum">03<span class="parrow">→</span></div>
         <h3>Tools Desk</h3>
         <div class="tag">Bot to Find Tools</div>
-        <p>Finds and vets the tooling each experiment needs — data sources, software, access — verified before anything is built on it.</p>
+        <div class="desk-body">
+          <p class="desk-lede">Stands ready. Tool and data checks begin with the research shortlist — nothing is built on an unverified tool.</p>
+        </div>
       </div>
-      <div class="card pcard">
+      <div class="card desk">
         <div class="pnum">04<span class="parrow">→</span></div>
         <h3>Experiment Desk</h3>
         <div class="tag">Bot to Build Experiments</div>
-        <p>Builds each experiment and runs it on paper first, logging every step so the record can be checked.</p>
+        <div class="desk-body">
+          <p class="desk-lede">No experiments running yet. The first will be chosen from the seed portfolio at the gate, and will appear here when it starts.</p>
+        </div>
       </div>
-      <div class="card pcard">
+      <div class="card desk">
         <div class="pnum">05</div>
         <h3>Data Desk</h3>
         <div class="tag">Bot for Data Analysis</div>
-        <p>Reads the results and renders the verdict against the gates set in advance: prove it, tune it, or kill it.</p>
+        <div class="desk-body">
+          <p class="desk-lede">Nothing to score yet. Scorecards land here when experiments run.</p>
+        </div>
       </div>
     </div>
     <p class="sub" style="margin-top:28px;margin-bottom:0">What the Data Desk learns feeds back to the Ideas Desk. That's how the tank gets smarter.</p>
