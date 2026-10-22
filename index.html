@@ -1,205 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stream Presence — An AI Think Tank</title>
-<meta name="description" content="Stream Presence is a think tank run entirely by AI. Frontier research on models, agents, and on-chain markets — open for commissioned research and projects, with products to come.">
-<meta property="og:title" content="Stream Presence — An AI Think Tank">
-<meta property="og:description" content="A think tank run entirely by AI. Research you can hire, products to come.">
+<title>Stream Presence — An applied AI think tank</title>
+<meta name="description" content="Exploring what AI makes possible. Testing what holds up. A founder-led research program on what individuals and small teams can reliably accomplish with AI.">
+<meta property="og:title" content="Stream Presence — An applied AI think tank">
+<meta property="og:description" content="Exploring what AI makes possible. Testing what holds up.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://jbsilver96.github.io/">
+<meta name="theme-color" content="#f3f1e9">
+<link rel="canonical" href="https://jbsilver96.github.io/">
 <style>
-  :root{
-    --bg:#0a0c10; --panel:#12151d; --panel2:#0e1118;
-    --ink:#e9e6dc; --muted:#9d9a8e; --faint:#6d6a60;
-    --line:#232733; --accent:#fabe3c; --accent-ink:#12100a;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.6;-webkit-font-smoothing:antialiased}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .wrap{max-width:1060px;margin:0 auto;padding:0 24px}
-  header.site{border-bottom:1px solid var(--line)}
-  .site-in{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
-  .wordmark{font-weight:700;letter-spacing:.14em;font-size:13px;text-transform:uppercase;color:var(--ink)}
-  .wordmark span{color:var(--accent)}
-  nav.main a{color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-left:26px}
-  nav.main a:hover{color:var(--ink);text-decoration:none}
-  .hero{padding:88px 0 64px;border-bottom:1px solid var(--line)}
-  .eyebrow{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:22px}
-  h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(40px,6.5vw,68px);line-height:1.08;letter-spacing:-.01em;max-width:15ch}
-  h1 em{font-style:italic;color:var(--accent)}
-  .lede{margin-top:26px;font-size:19px;color:var(--muted);max-width:58ch}
-  .lede strong{color:var(--ink);font-weight:600}
-  .hero-cta{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
-  .btn{display:inline-block;background:var(--accent);color:var(--accent-ink);font-weight:700;
-    font-size:14px;letter-spacing:.04em;padding:13px 22px;border-radius:999px}
-  .btn:hover{text-decoration:none;filter:brightness(1.07)}
-  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-  .btn.ghost:hover{border-color:var(--muted)}
-  section{padding:64px 0;border-bottom:1px solid var(--line)}
-  .kicker{color:var(--faint);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px}
-  h2{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:32px;line-height:1.2;margin-bottom:14px}
-  .sub{color:var(--muted);max-width:60ch;margin-bottom:36px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px}
-  .card h3{font-size:17px;font-weight:700;margin-bottom:8px}
-  .card p{color:var(--muted);font-size:15px}
-  .card .tag{display:inline-block;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px}
-  .inquiries{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--line)}
-  .inq{padding:22px 4px;border-bottom:1px solid var(--line);display:flex;gap:20px;align-items:baseline}
-  .inq .n{color:var(--accent);font-family:Georgia,serif;font-style:italic;font-size:18px;min-width:34px}
-  .inq p{font-family:Georgia,"Times New Roman",serif;font-size:21px;line-height:1.35}
-  .logbox{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:36px;
-    display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap}
-  .logbox h2{margin-bottom:8px}
-  .logbox p{color:var(--muted);max-width:52ch}
-  .handle{font-weight:700;color:var(--ink)}
-  footer.site{padding:40px 0 54px}
-  .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--faint);font-size:13px}
-  .foot a{color:var(--muted)}
-  @media (max-width:700px){
-    .grid{grid-template-columns:1fr}
-    .hero{padding:60px 0 48px}
-    nav.main a{margin-left:16px}
-    .inq p{font-size:18px}
-  }
+:root{--paper:#f3f1e9;--ink:#202d29;--muted:#56645c;--rule:#bbc2b6;--green:#285b40;--wash:#e5e9dc;--yellow:#e2ed9b}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6}a{color:inherit;text-underline-offset:4px}a:hover{color:var(--green)}a:focus-visible{outline:3px solid var(--green);outline-offset:6px}p,h1,h2,h3{margin:0}p+p{margin-top:16px}.wrap{width:min(1200px,100% - 80px);margin:auto}.skip{position:absolute;left:20px;top:-100px;background:var(--yellow);padding:12px;z-index:10}.skip:focus{top:10px}.masthead{display:flex;justify-content:space-between;align-items:center;gap:32px;padding:26px 0;border-bottom:1px solid var(--ink)}.brand{font-weight:700;font-size:20px;letter-spacing:-.6px;text-decoration:none;white-space:nowrap}.mark{display:inline-flex;gap:3px;margin-right:10px;vertical-align:middle}.mark i{display:block;width:4px;height:22px;background:var(--green);transform:skew(-20deg)}.mark i:nth-child(2){height:15px}.mark i:nth-child(3){height:9px}nav{display:flex;gap:24px;flex-wrap:wrap}nav a{font-size:13px;text-decoration:none;padding:6px 0}.label{font-size:11px;font-weight:700;letter-spacing:1.7px;text-transform:uppercase;color:var(--green)}.hero{padding:62px 0 52px}.hero-grid{display:grid;grid-template-columns:1fr 250px;gap:60px;align-items:end;margin-top:28px}h1,h2,.statement{font-family:Georgia,'Times New Roman',serif;font-weight:400}h1{font-size:clamp(48px,5.6vw,78px);line-height:1.04;letter-spacing:-3px;max-width:880px}h1 em{font-weight:400;color:var(--green)}.intro{max-width:640px;font-size:18px;color:var(--muted);margin-top:28px}.actions{display:flex;gap:26px;align-items:center;flex-wrap:wrap;margin-top:30px}.button{display:inline-flex;padding:12px 20px;background:var(--ink);color:var(--paper);text-decoration:none;font-size:13px}.button:hover{background:var(--green);color:white}.text-link{font-size:13px}.signal{border-top:1px solid var(--ink);padding-top:16px}.signal p{font-size:13px;margin-top:16px}.signal svg{width:100%;height:auto;margin:22px 0 10px}.caption{font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}.strip{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:17px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--ink);font-size:12px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:8px}.section{padding:64px 0;border-bottom:1px solid var(--rule)}.section-head{display:grid;grid-template-columns:240px 1fr;gap:40px;margin-bottom:34px}h2{font-size:40px;line-height:1.15;letter-spacing:-1px}.summary{color:var(--muted);max-width:650px;margin-top:16px}.agenda{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}.agenda article{border-top:1px solid var(--ink);padding-top:18px}.num{font-family:Georgia,serif;color:var(--green);font-size:18px}h3{font-size:19px;line-height:1.3;letter-spacing:-.3px;margin:20px 0 12px}.agenda p,.experiment p{color:var(--muted);font-size:15px}.measure{font-size:12px!important;color:var(--green)!important;margin-top:22px}.experiment{display:grid;grid-template-columns:240px 1fr 190px;gap:40px;border-top:1px solid var(--rule);padding:25px 0;align-items:start}.experiment h3{margin:0 0 10px}.status{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--wash);padding:5px 8px}.status.planned{background:transparent;border:1px solid var(--rule)}.experiment .text-link{justify-self:end}.note{font-size:13px;color:var(--muted);max-width:760px}.methods{background:var(--wash);padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:30px 45px}.methods h3{margin:0 0 10px;font-size:17px}.methods p{font-size:14px;color:var(--muted)}details{margin-top:28px;border-top:1px solid var(--rule);padding-top:18px}summary{cursor:pointer;font-size:14px;font-weight:700;min-height:32px}summary:focus-visible{outline:3px solid var(--green);outline-offset:4px}details p{font-size:14px;color:var(--muted);padding-top:12px;max-width:850px}.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}.statement{font-size:32px;line-height:1.3}.about-copy{font-size:15px;color:var(--muted)}.contact{padding:54px 0;display:flex;justify-content:space-between;gap:30px;align-items:center}.contact h2{font-size:32px}.contact p{font-size:14px;color:var(--muted);margin-top:12px;max-width:620px}footer{border-top:1px solid var(--ink);padding:24px 0 35px;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:12px}footer div{display:flex;gap:20px}.anchor{scroll-margin-top:24px}@media(max-width:900px){.wrap{width:calc(100% - 48px)}.masthead{align-items:flex-start;flex-direction:column;gap:14px}.hero-grid{grid-template-columns:1fr 170px;gap:30px}h1{letter-spacing:-2px}.section-head{grid-template-columns:160px 1fr;gap:24px}.experiment{grid-template-columns:160px 1fr;gap:24px}.experiment .text-link{grid-column:2;justify-self:start}.agenda{gap:20px}}@media(max-width:600px){.wrap{width:calc(100% - 40px)}nav{gap:10px 20px}nav a{padding:7px 0}.hero{padding-top:38px}.hero-grid{grid-template-columns:1fr;gap:32px}h1{font-size:49px;letter-spacing:-2px}.intro{font-size:17px}.signal{display:none}.strip{gap:8px;font-size:11px}.section{padding:42px 0}.section-head{display:block;margin-bottom:26px}.section-head .label{margin-bottom:16px}h2{font-size:34px}.agenda,.methods,.about-grid{grid-template-columns:1fr}.agenda{gap:28px}.agenda h3{margin-top:12px}.experiment{grid-template-columns:1fr;gap:14px}.experiment .text-link{grid-column:1}.methods{padding:24px;gap:28px}.about-grid{gap:26px}.contact{display:block}.contact .button{margin-top:24px}footer{flex-direction:column}.statement{font-size:28px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-
-<header class="site">
-  <div class="wrap site-in">
-    <div class="wordmark">Stream <span>Presence</span></div>
-    <nav class="main">
-      <a href="#research">Research</a>
-      <a href="#hire">Hire us</a>
-      <a href="#products">Products</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
-</header>
-
+<a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
-  <div class="hero">
-    <div class="eyebrow">An AI think tank · Run entirely by AI</div>
-    <h1>A think tank with <em>no humans</em> on staff.</h1>
-    <p class="lede">Stream Presence is a think tank <strong>operated end-to-end by an AI</strong> — the research, the analysis, the writing, the builds. We study what's actually happening at the frontier of artificial intelligence, publish what we find, and take on commissioned work for people with real questions.</p>
-    <div class="hero-cta">
-      <a class="btn" href="#hire">Hire the think tank</a>
-      <a class="btn ghost" href="https://x.com/Stream96present">Follow the frontier log on X</a>
-    </div>
-  </div>
-
-  <section id="research">
-    <div class="kicker">Research</div>
-    <h2>What we research</h2>
-    <p class="sub">Four programs, one standard: if we can't verify it, we don't publish it. The frontier produces enough fiction on its own.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="tag">Program 01</div>
-        <h3>Frontier models &amp; agents</h3>
-        <p>Releases, real capabilities, and the gap between the demo and the deployment. What the new systems can actually do — tested, not transcribed from press releases.</p>
-      </div>
-      <div class="card">
-        <div class="tag">Program 02</div>
-        <h3>AI in the wild</h3>
-        <p>How people are genuinely using these tools to get work done. Workflows over hype, field notes over thought leadership.</p>
-      </div>
-      <div class="card">
-        <div class="tag">Program 03</div>
-        <h3>Markets &amp; machines</h3>
-        <p>Where AI meets on-chain markets and autonomous systems. The culture and structure of machine-speed markets, observed from inside the room.</p>
-      </div>
-      <div class="card">
-        <div class="tag">Program 04</div>
-        <h3>The city as data</h3>
-        <p>A city is a dataset that throws parties. Our in-house exploration maps every event in New York — a living graph of what a city is doing, built as research you can use.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="hire">
-    <div class="kicker">Hire us</div>
-    <h2>Commission the think tank</h2>
-    <p class="sub">Bring us a question, a market, or a build. Every engagement is run by AI end-to-end — sourced from primary evidence, checked before it's delivered, and written in plain language.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="tag">Engagement 01</div>
-        <h3>Commissioned research</h3>
-        <p>Deep-dives and landscape scans on a technology, market, or question you need answered properly: what's real, who's actually doing it, where the evidence points. Delivered as a sourced brief you can act on.</p>
-      </div>
-      <div class="card">
-        <div class="tag">Engagement 02</div>
-        <h3>Projects &amp; prototypes</h3>
-        <p>Data pipelines, research products, and working prototypes — scoped tightly, built fast, and documented as we go. If it can be researched and built by an AI, we can take it on.</p>
-      </div>
-    </div>
-    <div class="inquiries" style="margin-top:28px">
-      <div class="inq"><div class="n">1.</div><p>Write to us with the question or the project — one paragraph is enough.</p></div>
-      <div class="inq"><div class="n">2.</div><p>You get a scope, a price, and a delivery date back. No calls required.</p></div>
-      <div class="inq"><div class="n">3.</div><p>We research, build, verify, and deliver — with the sources attached.</p></div>
-    </div>
-    <div class="hero-cta">
-      <a class="btn" href="mailto:streamofscene@gmail.com?subject=Commission%20inquiry%20—%20Stream%20Presence">Start a commission</a>
-    </div>
-  </section>
-
-  <section id="inquiries">
-    <div class="kicker">Open inquiries</div>
-    <h2>Questions we're working on</h2>
-    <p class="sub">The think tank's research agenda, in public. Answers land in the daily log and in longer notes as the evidence firms up.</p>
-    <div class="inquiries">
-      <div class="inq"><div class="n">i.</div><p>How much work can an agent do unsupervised before it needs a human signature?</p></div>
-      <div class="inq"><div class="n">ii.</div><p>Which AI workflows survive contact with real users — and which were only ever demos?</p></div>
-      <div class="inq"><div class="n">iii.</div><p>What does a city's event graph reveal that its headlines don't?</p></div>
-      <div class="inq"><div class="n">iv.</div><p>When machines trade with machines, what does a market actually look like?</p></div>
-    </div>
-  </section>
-
-  <section id="log">
-    <div class="logbox">
-      <div>
-        <div class="kicker">The frontier log</div>
-        <h2>The frontier moves daily. So do we.</h2>
-        <p>Short dispatches as discoveries land — new models, strange tools, on-chain weather — posted to X at <span class="handle">@Stream96present</span>. Run by an AI, openly. No engagement bait, no invented numbers.</p>
-      </div>
-      <a class="btn" href="https://x.com/Stream96present">@Stream96present on X</a>
-    </div>
-  </section>
-
-  <section id="products">
-    <div class="kicker">Products</div>
-    <h2>Tools you can buy — in time</h2>
-    <p class="sub">The think tank builds products out of its own research, and they'll be sold here as they prove out. The first is already public, free while it grows:</p>
-    <div class="logbox">
-      <div>
-        <h2>Current NYC</h2>
-        <p><strong style="color:var(--ink)">Every event in your city, mapped</strong> — concerts, gallery openings, sample sales, comedy, and the things no one else lists, gathered daily into one living map of New York.</p>
-      </div>
-      <a class="btn ghost" href="https://jbsilver96.github.io/current/">This week in NYC →</a>
-    </div>
-    <p class="sub" style="margin-top:28px;margin-bottom:0">Future products land on this page the day they're ready to buy — not before. To hear about them first, <a href="mailto:streamofscene@gmail.com?subject=Product%20list%20—%20Stream%20Presence">join the list by email</a>.</p>
-  </section>
-
-  <section id="contact">
-    <div class="kicker">Contact</div>
-    <h2>One inbox, answered by the think tank.</h2>
-    <p class="sub">Commissions, product questions, or a frontier tip worth checking — write to us and the AI answers.</p>
-    <a class="btn" href="mailto:streamofscene@gmail.com">streamofscene@gmail.com</a>
-  </section>
-
-  <footer class="site">
-    <div class="foot">
-      <div>© 2026 Stream Presence · New York City</div>
-      <div>Run entirely by AI, under the direction of its founder.</div>
-      <div><a href="https://x.com/Stream96present">X</a> · <a href="https://jbsilver96.github.io/current/">Current NYC</a> · <a href="mailto:streamofscene@gmail.com">Email</a></div>
-    </div>
-  </footer>
+<header class="masthead"><a class="brand" href="#" aria-label="Stream Presence home"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>Stream Presence</a><nav aria-label="Main navigation"><a href="#research">Research agenda</a><a href="#experiments">Experiments</a><a href="#methods">Our methods</a><a href="#about">About</a><a href="#contact">Contact</a></nav></header>
+<main id="main">
+<section class="hero" aria-labelledby="mission"><p class="label">An applied AI think tank</p><div class="hero-grid"><div><h1 id="mission">Exploring what AI<br>makes possible.<br><em>Testing what holds up.</em></h1><p class="intro">What can one person, or a small team, reliably accomplish with AI? Stream Presence is a founder-led research program turning that question into practical experiments, measurable results, and work others can examine.</p><div class="actions"><a class="button" href="#research">Explore the research agenda <span aria-hidden="true">&nbsp;↗</span></a><a class="text-link" href="#methods">How we plan to test</a></div></div><aside class="signal" aria-label="Research principle"><p class="label">Possibility → evidence</p><svg viewBox="0 0 250 180" aria-hidden="true" fill="none"><g stroke="#bbc2b6"><path d="M0 30H250M0 70H250M0 110H250M0 150H250M25 0V180M75 0V180M125 0V180M175 0V180M225 0V180"/></g><g stroke="#285b40" stroke-width="2"><path d="M0 145C70 145 65 20 125 65S185 150 250 35"/><path d="M0 120C70 120 80 75 125 85S195 90 250 80"/><path d="M0 160C65 160 90 135 125 110S200 90 250 90"/></g><circle cx="225" cy="87" r="6" fill="#285b40"/></svg><span class="caption">Conceptual illustration · not data</span><p>A useful result needs more than a convincing demo. It needs a task, a test, and a record of where it fails.</p></aside></div></section>
+<div class="strip"><span><span class="dot" aria-hidden="true"></span>Early research program</span><span>Independent inquiry · Human accountability · AI-assisted work</span></div>
+<section class="section" id="research"><div class="section-head"><p class="label">01 / Research agenda</p><div><h2>Capability is only the beginning.</h2><p class="summary">Our proposed studies examine the distance between what a system can do once and what a person can depend on in practice.</p></div></div><div class="agenda"><article><span class="num">01</span><h3>What becomes possible?</h3><p>Find the tasks that individuals and small teams can complete with AI, and compare them with a clearly defined baseline.</p><p class="measure">Observe: task completion, quality, scope.</p></article><article><span class="num">02</span><h3>What stays reliable?</h3><p>Repeat the work. Track failures, human interventions, and sensitivity to changes in prompts, tools, and conditions.</p><p class="measure">Observe: repeatability, error, oversight.</p></article><article><span class="num">03</span><h3>What becomes worthwhile?</h3><p>Ask where a workflow is useful after accounting for setup, review, maintenance, and the people affected by its use.</p><p class="measure">Observe: effort, cost, practical value.</p></article></div></section>
+<section class="section" id="experiments"><span id="products" class="anchor"></span><div class="section-head"><p class="label">02 / Experiments</p><div><h2>A working notebook, open from the start.</h2><p class="summary">This program is taking shape. No completed research studies or validated findings are published here yet. Planned work below describes questions to test, not results.</p></div></div><article class="experiment"><div><span class="status">Early project</span></div><div><h3>Current NYC</h3><p>A public New York City event-discovery prototype. A potential setting for studying information gathering, freshness, and verification. Its existence is not evidence of comprehensive coverage or validated performance.</p></div><a class="text-link" href="https://jbsilver96.github.io/current/">Explore the prototype ↗</a></article><article class="experiment"><div><span class="status planned">Planned study</span></div><div><h3>From sources to a usable brief</h3><p>Compare a small AI-assisted research workflow with a manual baseline. Define a task set and scoring rubric, repeat trials, and record factual errors, time spent, and human corrections.</p></div></article><article class="experiment"><div><span class="status planned">Planned research sequence</span></div><div><h3>Test. Reproduce. Reconsider.</h3><p>Begin with a small reproducible study and lab notes. Follow with a second study and reusable artifact, seek an external reproduction, then use a third study and external review to inform a synthesis. Scope will follow the evidence.</p></div></article><p class="note">Project disclosure: Current NYC is a founder-owned project. Evaluating our own work creates a conflict of interest; future reports should identify it and distinguish internal tests from independent evaluation.</p></section>
+<section class="section" id="methods"><div class="section-head"><p class="label">03 / Methods &amp; transparency</p><div><h2>Make the evidence inspectable.</h2><p class="summary">These are the standards we intend to use for our research. Each published study should show what was tested, what happened, and what remains uncertain.</p></div></div><div class="methods"><article><h3>Define before testing</h3><p>State the question, task sample, baseline, success criteria, and exclusions before interpreting results. Keep exploratory observations separate from planned tests.</p></article><article><h3>Record the full workflow</h3><p>Document model versions, prompts, tools, dates, and human intervention. Report time and cost where measured, including review and correction.</p></article><article><h3>Report failures and limits</h3><p>Publish sample sizes, unsuccessful trials, uncertainty, and changes to the method. Avoid general claims from a single prototype or a selected success.</p></article><article><h3>Enable checking, protect people</h3><p>Share reproducible materials where safe and permitted. Exclude private logs, credentials, and personal data. Clearly mark withheld materials and their effect on reproducibility.</p></article></div><details><summary>Intellectual references &amp; independence</summary><p>Our approach draws on public work from <a href="https://epoch.ai/about">Epoch AI</a> on empirical AI research, <a href="https://metr.org/about">METR</a> on capability evaluation, <a href="https://www.inkandswitch.com/">Ink &amp; Switch</a> on experimental tools, <a href="https://ainowinstitute.org/about">AI Now</a> on societal consequences, <a href="https://www.alignment.org/alignment-research-center/">ARC</a> on alignment research, and <a href="https://inspect.aisi.org.uk/">Inspect</a> on evaluation tooling. These are methodological references, not affiliations, endorsements, or partnerships.</p></details></section>
+<section class="section" id="about"><div class="section-head"><p class="label">04 / About</p><h2>Small by design. Accountable by principle.</h2></div><div class="about-grid"><p class="statement">A research practice for people working with AI in the real world.</p><div class="about-copy"><p>Stream Presence is an early, founder-led applied AI think tank. Our focus is the practical capability, reliability, and opportunities of AI for individuals and small teams. This is a developing research program, not an established institution.</p><p>AI assists with research, analysis, writing, and building. The founder directs the work and remains responsible for what is published. AI-generated material requires verification; assistance is not independent review.</p><p>Future studies should disclose AI assistance, project ownership, funding or commissioning relationships, and relevant limitations alongside the work. Corrections and reproduction feedback are welcome through the contact links below.</p></div></div></section>
+<section class="contact" id="contact"><span id="hire" class="anchor"></span><div><p class="label">Keep the inquiry open</p><h2>Bring a question. Challenge a result.</h2><p>For research questions, potential collaborations, or corrections, use our existing email. You can also follow <a href="https://x.com/Stream96present">@Stream96present on X</a>.</p></div><a class="button" href="mailto:streamofscene@gmail.com">Email Stream Presence ↗</a></section>
+</main><footer><span>© 2026 Stream Presence</span><span>Founder-led. AI-assisted. Evidence first.</span><div><a href="https://x.com/Stream96present">X</a><a href="mailto:streamofscene@gmail.com">Email</a><a href="#main">Back to top ↑</a></div></footer>
 </div>
-
 </body>
 </html>
