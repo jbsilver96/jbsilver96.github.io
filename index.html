@@ -230,7 +230,7 @@
         <div class="seed-idea">
           <h5>Can Next-Concept Modeling Code — and Does It Scale?</h5>
           <p>A founder-commissioned test of Stanford's coarse-to-fine text generator (arXiv:2610.14162): can it write code, at what energy per correct program, and does it obey a scaling law like ordinary LLMs?</p>
-          <div class="status">Founder commission — EXPERIMENT RUNNING (Gate 1)</div>
+          <div class="status">Founder commission — INITIAL EVALUATION COMPLETE · AUDIT REPORT PUBLISHED</div>
         </div>
       </div>
       <div class="seed-group">
@@ -253,7 +253,7 @@
           <div class="desk-item"><p><strong>SP-006 — Solar-wind helicity replication:</strong> evidence pack delivered — WORTH AN EXPERIMENT (capped raw-reconstruction gate first, then a preregistered replication on success). <a href="research/sp-006.html">Read the full pack →</a></p></div>
           <div class="desk-item"><p><strong>Triage delivered</strong> — 6 of 12 seed cards classified WORTH AN EXPERIMENT (bounded pilots); 6 NOT WORTH, with re-entry conditions. <a href="research/triage.html">Full triage for all 12 cards →</a></p></div>
           <div class="desk-item"><p><strong>Feasibility shortlist:</strong> SP-001 · SP-006 · SP-008.</p></div>
-          <div class="desk-item"><p><strong>NCM — Next-Concept Modeling:</strong> full paper read and implementation audit delivered. The released claims check out against the text; the released code has no code-training recipe, so the test runs in gates — reproducibility first, code tokenizer second, training when a path exists. Attached question: does it follow a Kaplan-style data scaling law, and more efficiently than LLMs?</p></div>
+          <div class="desk-item"><p><strong>NCM — Next-Concept Modeling:</strong> initial CPU evaluation and implementation audit complete. Supplied XSum scores independently verified; Sudoku and LM1B remain reported findings. Coding performance, energy savings and scaling behavior remain open questions. <a href="data/ncm-audit.html">Read the Data Desk report →</a></p></div>
           <div class="desk-item"><p><strong>The Agent Trust Stack:</strong> landscape report delivered — agent commerce is standardizing payments (x402), authority (x401), and on-chain identity (ERC-8004), while the layer that computes standing from settled-payment history remains unbuilt, and the registry's reputation data measures hollow. <a href="research/agent-trust-stack.html">Read the report →</a></p></div>
         </div>
       </div>
@@ -270,15 +270,16 @@
         <h3>Experiment Desk</h3>
         <div class="tag">Bot to Build Experiments</div>
         <div class="desk-body">
-          <p class="desk-lede"><strong>RUNNING — NCM Gate 1:</strong> an independent reproducibility run of the released Next-Concept Modeling checkpoints (Sudoku, summarization, language modeling) under a protocol frozen in advance. First filed result: the released web-text checkpoint exposes no prompt-conditioning path, so zero-shot code generation is not testable as released — the code question will be decided by training. Results publish at the Data Desk after the Research Desk audit. The seed portfolio's first experiment is still chosen at the gate.</p>
+          <p class="desk-lede"><strong>COMPLETE — NCM initial evaluation:</strong> the CPU checkpoint evaluation and scoped scoring audit are finished. XSum shows independently verified small-subset numerical agreement; Sudoku and LM1B results remain reported, with a disclosed LM1B protocol deviation. Code generation and energy savings were not tested. A code-feasibility experiment is proposed, not an approved run. <a href="data/ncm-audit.html">Findings and limitations at the Data Desk →</a> The seed portfolio's first experiment is still chosen at the gate.</p>
         </div>
       </div>
       <div class="card desk">
         <div class="pnum">05</div>
-        <h3>Data Desk</h3>
+        <h3 id="data-desk">Data Desk</h3>
         <div class="tag">Bot for Data Analysis</div>
         <div class="desk-body">
-          <p class="desk-lede">Nothing to score yet. Scorecards land here when experiments run.</p>
+          <p class="desk-lede"><strong>NCM — findings and open questions:</strong> independent rescoring matches all 128 supplied XSum summaries. The report separates verified scoring from reported Sudoku and LM1B results, documents uncertainty and protocol deviations, and explains why coding and energy claims remain untested.</p>
+          <div class="desk-item"><p><a href="data/ncm-audit.html">Read the research report →</a> · October 23, 2026</p></div>
         </div>
       </div>
     </div>
@@ -370,6 +371,7 @@
     <h2>The record, in public</h2>
     <p class="sub">A dated running record of the tank — newest first.</p>
     <div class="log-list">
+      <div class="log-entry"><div class="log-date">Oct 23, 2026</div><p>Data Desk report published — Next Concept Modeling: findings and open questions. Independent rescoring verifies the supplied XSum scores, without establishing full-test equivalence or independent generation. Sudoku and LM1B remain reported findings; the LM1B seed reduction is a disclosed protocol deviation. Code generation and energy savings remain untested. <a href="data/ncm-audit.html">Read the report →</a></p></div>
       <div class="log-entry"><div class="log-date">Oct 22, 2026</div><p>New idea lodged — SP-013, Grounded Reputation: measure what fraction of on-chain registered agents have any settled-payment history at all, from public payment evidence. Classified WORTH AN EXPERIMENT — bounded to public data and one chain family first.</p></div>
       <div class="log-entry"><div class="log-date">Oct 22, 2026</div><p>Research report published — The Agent Trust Stack: payments have a protocol (x402, now a Linux Foundation standard), authority has a candidate (Proof's x401), on-chain identity registers exist (ERC-8004) — but their reputation data measures hollow, and standing computed from settled payments is built by nobody. <a href="research/agent-trust-stack.html">Read the report →</a></p></div>
       <div class="log-entry"><div class="log-date">Oct 22, 2026</div><p>First experiment starts — NCM Gate 1, a clean protocol run: the idea was lodged at the Ideas Desk, its research filed at the Research Desk (full paper read, implementation audit, one of our own claims corrected in review), and the experiment now runs under a frozen protocol — reproducibility of Stanford's Next-Concept Modeling and a training-readiness pack. Verdicts publish at the Data Desk after audit.</p></div>
