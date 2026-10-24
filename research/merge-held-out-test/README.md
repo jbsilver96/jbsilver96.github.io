@@ -5,7 +5,7 @@ https://jbsilver96.github.io/research/merge-held-out-test.html
 (Stream Presence, Experiment Desk, Autonomous Run #2, 2026-10-24).
 
 This pack was requested by the tank's second seat (dot) so the reported
-intervals and compute matching can be independently recomputed, and was
+intervals and budget accounting can be independently verified, and was
 published 2026-10-24 (Amendment B3 in STUDY_RESULTS.md).
 
 ## Contents
@@ -16,7 +16,9 @@ published 2026-10-24 (Amendment B3 in STUDY_RESULTS.md).
   B3 (this pack) and B4 (dot's completed independent check: hashes, rows,
   means and champions verified; candidate-matched-not-equal-compute,
   local-search comparator, script-aligned intervals, and the
-  no-action-sequences limitation carried into the result).
+  no-action-sequences limitation carried into the result), and B5
+  (dot's live-B4 closure cleanup: budget-accounting wording; no exact
+  reproduction claimed for the old unsaved inline endpoints).
 - `merge_engine.py` — research engine, version merge-py-1.0.
 - `players.py` — player policies, including the hand-designed features.
 - `study.py` — the study runner (evolve / randsearch / final modes).
@@ -25,14 +27,16 @@ published 2026-10-24 (Amendment B3 in STUDY_RESULTS.md).
   `python3 analysis_b1_b2.py` (10,000 bootstrap resamples, seed 42).
 - `analysis_b1_b2_output.json` — that script's output from 2026-10-24.
   It reproduces the B1/B2 numbers within bootstrap Monte-Carlo variation;
-  every conclusion is unchanged.
+  every conclusion is unchanged. It does NOT exactly reproduce the old
+  unsaved inline endpoints — those endpoints differ within that variation,
+  and the saved script's values are the reproducible record.
 - `data/heldout_episodes.jsonl` — per-seed scores for all 6 players ×
   100 held-out seeds (5000–5099, touched once).
 - `data/summary.json` — the final-evaluation summary.
 - `data/champion_evolution.json` / `data/champion_random_search.json` —
   the two champion weight vectors (evo-gen19-idx10, rs-310).
 - `data/fitness_log_evolution.jsonl` / `data/fitness_log_random_search.jsonl`
-  — fitness for all 640 + 640 candidates (compute-matching check).
+  — fitness for all 640 + 640 candidates (budget-accounting check).
 - `data/curve_evolution.jsonl` / `data/curve_random_search.jsonl` —
   the probe-seed learning curves.
 
@@ -54,7 +58,7 @@ sequences, so they are not full episode replay traces (Amendment B4).
 
 ```
 a8e0c9337f28c36446ae3373a5a74b2544a47b36fb58d07879bf45fe5953ea01  DESIGN.md
-b41b691b0e591116609cf709e1ec6b3d3e81c5f9cdc7beef13d20880c3ac9991  STUDY_RESULTS.md
+f40d4d05203f268ec8e3c7c58da69d9827f1c072a4d71cde92fcd9ba6b8fd4f9  STUDY_RESULTS.md
 ad4563a231b46b205ca41c0c9601722dc6a8a3d4a911aab6c0113d3b7e7b9c6e  merge_engine.py
 08b1689969e3c1775df10166c4e10023089c754ea48b9269cae76712c38d51f0  players.py
 e718cfe377a5e943faac984af86523fc99dd05c02c081d5821bf8d29876cbffe  study.py
@@ -75,4 +79,5 @@ study.py, heldout_episodes.jsonl and summary.json are identical to the
 manifest first posted in Slack on 2026-10-24 — those files are unchanged.
 STUDY_RESULTS.md differs by the disclosed B3 amendment appended /
 inserted after that posting, and by the disclosed B4 amendment (dot's
-completed independent check and its qualifications) appended 2026-10-24.
+completed independent check and its qualifications) and the disclosed
+B5 wording cleanup, both appended 2026-10-24.
