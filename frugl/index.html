@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frugl — Your AI bill, on a diet</title>
+<meta name="description" content="Frugl sits between your app and its AI model and shrinks every request before it's sent. Up to 40% fewer tokens, with no measured loss in answer quality.">
+<style>
+  :root{
+    --blue:#2563EB; --blue-dark:#1D4ED8; --navy:#0F2A5C; --ink:#1E293B;
+    --muted:#5B6B82; --bg:#FFFFFF; --bg-soft:#F2F6FE; --line:#DCE6F7;
+    --radius:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:var(--bg); line-height:1.6; font-size:18px;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Nav */
+  nav{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:10}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .wordmark{font-size:26px;font-weight:800;color:var(--blue);letter-spacing:-0.5px}
+  .wordmark:hover{text-decoration:none}
+  .navlinks{display:flex;gap:28px;font-size:16px}
+  .navlinks a{color:var(--ink);font-weight:500}
+  .navlinks a:hover{color:var(--blue);text-decoration:none}
+
+  /* Hero */
+  .hero{padding:84px 0 64px;text-align:center;background:linear-gradient(180deg,var(--bg-soft),#fff)}
+  .hero h1{font-size:52px;line-height:1.12;color:var(--navy);letter-spacing:-1px;font-weight:800}
+  .hero p.sub{font-size:21px;color:var(--muted);max-width:640px;margin:22px auto 34px}
+  .buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-block;padding:14px 28px;border-radius:999px;font-weight:600;font-size:17px}
+  .btn:hover{text-decoration:none}
+  .btn-primary{background:var(--blue);color:#fff}
+  .btn-primary:hover{background:var(--blue-dark)}
+  .btn-ghost{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+  .btn-ghost:hover{background:var(--bg-soft)}
+
+  /* Claim band */
+  .claim{background:var(--blue);color:#fff;padding:52px 0;text-align:center}
+  .claim .big{font-size:44px;font-weight:800;letter-spacing:-0.5px;line-height:1.15}
+  .claim .quality{font-size:22px;font-weight:600;margin-top:8px}
+  .claim .fineprint{font-size:15px;color:#C7DBFF;max-width:620px;margin:16px auto 0}
+  .claim a{color:#fff;font-weight:600;text-decoration:underline}
+
+  /* Sections */
+  section{padding:72px 0}
+  section.soft{background:var(--bg-soft)}
+  h2{font-size:34px;color:var(--navy);letter-spacing:-0.5px;text-align:center;margin-bottom:14px}
+  .lede{text-align:center;color:var(--muted);max-width:640px;margin:0 auto 44px;font-size:19px}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px}
+  .card .num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;font-size:17px;margin-bottom:16px}
+  .card h3{font-size:20px;color:var(--navy);margin-bottom:8px}
+  .card p{font-size:16.5px;color:var(--muted)}
+
+  /* Flow + code */
+  .flow{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:36px;font-weight:600;font-size:18px}
+  .flow .node{background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 22px;color:var(--navy)}
+  .flow .node.mid{border-color:var(--blue);background:var(--blue);color:#fff}
+  .flow .arrow{color:var(--blue);font-size:22px}
+  .codeblock{background:var(--navy);color:#DCE6F7;border-radius:var(--radius);padding:26px 28px;max-width:680px;margin:0 auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15.5px;line-height:1.75;overflow-x:auto;white-space:pre}
+  .codeblock .dim{color:#8FA8D8}
+  .codeblock .hl{color:#fff;font-weight:700}
+  .codenote{text-align:center;color:var(--muted);font-size:15.5px;margin-top:16px}
+
+  /* Proof */
+  .proofcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px;display:flex;flex-direction:column}
+  .proofcard h3{font-size:19px;color:var(--navy);margin-bottom:8px}
+  .proofcard p{font-size:16.5px;color:var(--muted);flex:1}
+  .proofcard a{font-weight:600;margin-top:14px;font-size:16.5px}
+
+  /* Get started */
+  .getstarted{text-align:center}
+  .getstarted p{color:var(--muted);max-width:560px;margin:0 auto 26px;font-size:19px}
+
+  footer{border-top:1px solid var(--line);padding:34px 0;text-align:center;color:var(--muted);font-size:15.5px}
+  footer .brand{font-weight:600;color:var(--ink)}
+
+  @media (max-width:760px){
+    .hero h1{font-size:38px}
+    .claim .big{font-size:32px}
+    .cards{grid-template-columns:1fr}
+    section{padding:52px 0}
+    .navlinks{gap:18px;font-size:15px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="wordmark" href="#">Frugl</a>
+    <div class="navlinks">
+      <a href="#how">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#get-started">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Your AI bill, on a diet.</h1>
+    <p class="sub">Frugl sits between your app and its AI model and shrinks every request before it's sent — so you pay for fewer tokens and get the same answers.</p>
+    <div class="buttons">
+      <a class="btn btn-primary" href="#get-started">Get an API key</a>
+      <a class="btn btn-ghost" href="#proof">See the proof</a>
+    </div>
+  </div>
+</header>
+
+<div class="claim">
+  <div class="wrap">
+    <div class="big">Up to 40% fewer tokens</div>
+    <div class="quality">0 loss in answer quality — measured</div>
+    <p class="fineprint">Based on our public tests on real workloads. Savings vary by workload, and small, simple requests pass through untouched. <a href="#proof">Read the tests →</a></p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>What Frugl does</h2>
+    <p class="lede">Three things, all automatic. You don't rebuild anything, and your users never see a difference.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="num">1</div>
+        <h3>Plug in — change one line</h3>
+        <p>Point your app at Frugl instead of your AI provider. That's the whole setup. Frugl works with the major model APIs, and your provider account stays yours.</p>
+      </div>
+      <div class="card">
+        <div class="num">2</div>
+        <h3>We shrink every request</h3>
+        <p>Bulky data is re-written in a compact form and compressed automatically before it's sent. Nothing you send is ever lost — the originals are kept and can be pulled back mid-conversation, automatically.</p>
+      </div>
+      <div class="card">
+        <div class="num">3</div>
+        <h3>Same answers</h3>
+        <p>Quality is checked, not hoped for. If shrinking a request could risk the answer, Frugl passes it through untouched instead. Savings never eat the evidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="soft" id="how">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="lede">Your app talks to Frugl. Frugl talks to your AI model. The answers come back exactly as before.</p>
+    <div class="flow">
+      <span class="node">Your app</span><span class="arrow">→</span>
+      <span class="node mid">Frugl</span><span class="arrow">→</span>
+      <span class="node">Your AI model</span>
+    </div>
+    <div class="codeblock"><span class="dim"># Before — you call the model directly</span>
+base_url = <span class="hl">"https://api.your-provider.com/v1"</span>
+
+<span class="dim"># After — one line changes, nothing else does</span>
+base_url = <span class="hl">"https://your-frugl-endpoint/v1"</span>  <span class="dim"># your Frugl endpoint</span></div>
+    <p class="codenote">Same code, same keys, same responses. Just smaller requests.</p>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="wrap">
+    <h2>Don't take our word for it</h2>
+    <p class="lede">We publish our tests — including the failures.</p>
+    <div class="cards">
+      <div class="proofcard">
+        <h3>The format test</h3>
+        <p>We re-wrote real data in a compact format and counted every token: 26–40% fewer than the standard format, zero data lost — and in a 20-question check, the model answered just as well from the compact version: 20 out of 20, both ways.</p>
+        <a href="https://jbsilver96.github.io/research/gcf-test.html">Read the test →</a>
+      </div>
+      <div class="proofcard">
+        <h3>The screen test</h3>
+        <p>We built the same app screens two ways. Written in a compact language, they took half the tokens of the standard approach — word for word the same screens.</p>
+        <a href="https://jbsilver96.github.io/research/openui-test.html">Read the test →</a>
+      </div>
+      <div class="proofcard">
+        <h3>The test that failed</h3>
+        <p>A popular tool cut reading by 60% — and quietly dropped the one line that explained a failure. We rejected it. That's the standard Frugl is built to: savings never eat the evidence.</p>
+        <a href="https://jbsilver96.github.io/research/rtk-test.html">Read the test →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="soft" id="get-started">
+  <div class="wrap getstarted">
+    <h2>Get started</h2>
+    <p>API keys open soon. Early access is being prepared — to get in line, send us an email and we'll reach out when keys go live.</p>
+    <a class="btn btn-primary" href="mailto:streamofscene@gmail.com?subject=Frugl%20early%20access">Email us for early access</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><span class="brand">Frugl</span> — a <a href="https://jbsilver96.github.io/">Stream Presence</a> product.</p>
+    <p>Run entirely by AI, under the direction of its founder.</p>
+  </div>
+</footer>
+
+</body>
+</html>
