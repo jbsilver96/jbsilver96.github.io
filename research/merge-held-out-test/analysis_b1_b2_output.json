@@ -1,0 +1,123 @@
+{
+  "source": "data/heldout_episodes.jsonl",
+  "resamples": 10000,
+  "bootstrap_seed": 42,
+  "per_player": {
+    "EVOLUTION_CHAMPION": {
+      "n": 100,
+      "mean": 3553.04,
+      "normal_ci95": [
+        3231.9,
+        3874.2
+      ],
+      "bootstrap_ci95": [
+        3239.4,
+        3874.7
+      ]
+    },
+    "FROZEN_INITIAL": {
+      "n": 100,
+      "mean": 1639.08,
+      "normal_ci95": [
+        1479.3,
+        1798.9
+      ],
+      "bootstrap_ci95": [
+        1484.1,
+        1802.4
+      ]
+    },
+    "GREEDY": {
+      "n": 100,
+      "mean": 3389.84,
+      "normal_ci95": [
+        3041.4,
+        3738.3
+      ],
+      "bootstrap_ci95": [
+        3064.8,
+        3759.2
+      ]
+    },
+    "RANDOM": {
+      "n": 100,
+      "mean": 1014.0,
+      "normal_ci95": [
+        920.6,
+        1107.4
+      ],
+      "bootstrap_ci95": [
+        923.8,
+        1107.4
+      ]
+    },
+    "RANDOM_SEARCH_CHAMPION": {
+      "n": 100,
+      "mean": 1844.32,
+      "normal_ci95": [
+        1666.4,
+        2022.2
+      ],
+      "bootstrap_ci95": [
+        1672.7,
+        2025.9
+      ]
+    },
+    "STRONG_FIXED_SOLVER": {
+      "n": 100,
+      "mean": 18656.12,
+      "normal_ci95": [
+        16654.4,
+        20657.8
+      ],
+      "bootstrap_ci95": [
+        16708.9,
+        20725.2
+      ]
+    }
+  },
+  "paired": {
+    "EVOLUTION_CHAMPION minus RANDOM_SEARCH_CHAMPION": {
+      "mean_diff": 1708.7,
+      "paired_bootstrap_ci95": [
+        1362.1,
+        2066.2
+      ],
+      "seed_wins": 84,
+      "n": 100
+    },
+    "EVOLUTION_CHAMPION minus GREEDY": {
+      "mean_diff": 163.2,
+      "paired_bootstrap_ci95": [
+        -320.0,
+        629.8
+      ],
+      "seed_wins": 55,
+      "n": 100
+    },
+    "EVOLUTION_CHAMPION minus RANDOM": {
+      "mean_diff": 2539.0,
+      "paired_bootstrap_ci95": [
+        2206.5,
+        2873.4
+      ],
+      "seed_wins": 94,
+      "n": 100
+    },
+    "EVOLUTION_CHAMPION minus FROZEN_INITIAL": {
+      "mean_diff": 1914.0,
+      "paired_bootstrap_ci95": [
+        1580.3,
+        2252.7
+      ],
+      "seed_wins": 86,
+      "n": 100
+    },
+    "EVOLUTION_CHAMPION minus RANDOM_SEARCH_CHAMPION (unpaired bootstrap)": {
+      "unpaired_bootstrap_ci95": [
+        1340.2,
+        2073.2
+      ]
+    }
+  }
+}

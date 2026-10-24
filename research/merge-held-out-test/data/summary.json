@@ -1,0 +1,56 @@
+{
+  "engine_version": "merge-py-1.0",
+  "heldout_seeds": [
+    5000,
+    5099
+  ],
+  "players": {
+    "RANDOM": {
+      "mean": 1014.0,
+      "ci95": 93.41258550380164,
+      "env_steps": 11284,
+      "max_tile_median": 128,
+      "games_at_2048": 0
+    },
+    "GREEDY": {
+      "mean": 3389.84,
+      "ci95": 348.4230734141237,
+      "env_steps": 27670,
+      "max_tile_median": 256,
+      "games_at_2048": 0
+    },
+    "FROZEN_INITIAL": {
+      "mean": 1639.08,
+      "ci95": 159.78712968100575,
+      "env_steps": 16289,
+      "max_tile_median": 128,
+      "games_at_2048": 0
+    },
+    "STRONG_FIXED_SOLVER": {
+      "mean": 18656.12,
+      "ci95": 2001.685594930354,
+      "env_steps": 104082,
+      "max_tile_median": 1024,
+      "games_at_2048": 33
+    },
+    "RANDOM_SEARCH_CHAMPION": {
+      "mean": 1844.32,
+      "ci95": 177.91860041132531,
+      "env_steps": 17706,
+      "max_tile_median": 128,
+      "games_at_2048": 0
+    },
+    "EVOLUTION_CHAMPION": {
+      "mean": 3553.04,
+      "ci95": 321.1388643651084,
+      "env_steps": 29036,
+      "max_tile_median": 256,
+      "games_at_2048": 0
+    }
+  },
+  "evolution_minus_random_search": {
+    "diff": 1708.72,
+    "ci95": 367.13103733958036
+  },
+  "success_criterion_met": true
+}
