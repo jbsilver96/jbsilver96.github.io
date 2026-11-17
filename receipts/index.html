@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receipts — Stream Presence</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+         max-width: 860px; margin: 2rem auto; padding: 0 1rem;
+         color: #1a1a2e; line-height: 1.5; }
+  h1 { font-size: 1.6rem; } h2 { margin-top: 2rem; }
+  code, .mono { font-family: ui-monospace, Menlo, monospace;
+                font-size: .85em; word-break: break-all; }
+  .card { border: 1px solid #ddd; border-radius: 10px;
+          padding: 1rem 1.2rem; margin: 1rem 0; }
+  .ok { color: #137333; } .bad { color: #b3261e; }
+  .verdict { font-size: 1.3rem; font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border-bottom: 1px solid #eee; padding: .35rem .5rem;
+           text-align: left; vertical-align: top; }
+  button, input[type=text] { font-size: 1rem; padding: .45rem .8rem; }
+  input[type=text] { width: 60%; }
+  .small { color: #666; font-size: .9rem; }
+  a { color: #0b57d0; }
+</style>
+</head>
+<body>
+<h1>🧾 Receipts — Stream Presence</h1>
+<p>Every public action our agent fleet takes gets a signed, timestamped
+receipt in this public, append-only, hash-chained log. Approvals bind a
+fingerprint of the exact thing approved — change the thing and the
+approval is mechanically expired. Revocations are receipts too.</p>
+<p><strong>Verification happens in your browser.</strong> This page
+fetches the public log and recomputes every signature, chain link, and
+approval check locally. You do not have to trust our server — there
+isn't one in the loop. Spec: <a href="SPEC.md">SPEC.md</a> ·
+Raw log: <a href="receipts.jsonl">receipts.jsonl</a> ·
+Registry: <a href="registry.json">registry.json</a></p>
+
+<h2>Verify a receipt</h2>
+<p><input type="text" id="rid" placeholder="rcpt_…">
+<button id="go">Verify</button></p>
+<div id="verdict"></div>
+
+<h2>Issuer registry</h2>
+<div id="registry"><p class="small">Loading…</p></div>
+
+<h2>The log</h2>
+<div id="log"><p class="small">Loading…</p></div>
+
+<script type="module">
+import * as ed from 'https://cdn.jsdelivr.net/npm/@noble/ed25519@2.2.0/+esm';
+import { sha512 } from 'https://cdn.jsdelivr.net/npm/@noble/hashes@1.6.1/sha512/+esm';
+ed.etc.sha512Sync = (...m) => sha512(ed.etc.concatBytes(...m));
+
+// ---- JCS canonical JSON (same subset as the Python signer) ----
+function canon(o) {
+  if (o === null || typeof o === 'boolean' || typeof o === 'string')
+    return JSON.stringify(o);
+  if (typeof o === 'number') {
+    if (!Number.isInteger(o)) throw new Error('float in signed payload');
+    return String(o);
+  }
+  if (Array.isArray(o)) return '[' + o.map(canon).join(',') + ']';
+  const keys = Object.keys(o).sort();
+  return '{' + keys.map(k => JSON.stringify(k) + ':' + canon(o[k])).join(',') + '}';
+}
+async function sha256hex(text) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+const B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+function b58decode(s) {
+  let n = 0n;
+  for (const c of s) n = n * 58n + BigInt(B58.indexOf(c));
+  let hex = n.toString(16); if (hex.length % 2) hex = '0' + hex;
+  const bytes = [...(hex.match(/../g) || [])].map(h => parseInt(h, 16));
+  let zeros = 0; while (s[zeros] === '1') zeros++;
+  return new Uint8Array([...Array(zeros).fill(0), ...bytes]);
+}
+function pubkeyFromDid(did) {
+  const raw = b58decode(did.slice('did:key:z'.length));
+  if (raw[0] !== 0xed || raw[1] !== 0x01) throw new Error('not ed25519 did:key');
+  return raw.slice(2);
+}
+function b64uDecode(s) {
+  s = s.replace(/-/g, '+').replace(/_/g, '/');
+  while (s.length % 4) s += '=';
+  return Uint8Array.from(atob(s), c => c.charCodeAt(0));
+}
+async function sigValid(obj, did) {
+  const body = { ...obj }; const sig = body.signature; delete body.signature;
+  if (!sig) return false;
+  try {
+    return await ed.verifyAsync(b64uDecode(sig),
+      new TextEncoder().encode(canon(body)), pubkeyFromDid(did));
+  } catch { return false; }
+}
+
+const DOES_NOT_ASSERT = [
+  'that the action was wise, safe, or a good idea',
+  'that the action was authorized by any party other than the named approver (when an approval is bound)',
+  'that args_public is complete for receipts where it is absent — absent args are proven by hash only, on disclosure by a holder',
+  'that the artifact at artifact_url still exists or is unchanged beyond its result_hash at issuance time',
+  'the real-world identity behind a did:key beyond its registry entry',
+];
+
+let ENTRIES = [], REGISTRY = { issuers: [] };
+const byKindId = (kind, field, id) =>
+  ENTRIES.find(e => e.kind === kind && e.object[field] === id);
+
+async function verifyChain() {
+  let prev = 'GENESIS';
+  for (let i = 0; i < ENTRIES.length; i++) {
+    const e = ENTRIES[i];
+    if (e.seq !== i || e.prev_hash !== prev) return false;
+    const { entry_hash, ...rest } = e;
+    if (await sha256hex(prev + canon(rest)) !== entry_hash) return false;
+    prev = entry_hash;
+  }
+  return true;
+}
+
+async function verifyReceipt(rid) {
+  const out = document.getElementById('verdict');
+  const entry = byKindId('receipt', 'receipt_id', rid);
+  if (!entry) { out.innerHTML = `<div class="card"><span class="verdict bad">NOT FOUND</span><p class="mono">${rid}</p></div>`; return; }
+  const r = entry.object, checks = [];
+  const chainOk = await verifyChain();
+  checks.push(['log chain intact', chainOk, `${ENTRIES.length} entries replayed`]);
+  checks.push(['issuer signature', await sigValid(r, r.issuer), 'Ed25519 over JCS-canonical receipt']);
+  checks.push(['issuer registered', REGISTRY.issuers.some(i => i.did === r.issuer), r.issuer]);
+  let prev = 'GENESIS';
+  for (const e of ENTRIES) {
+    if (e.seq >= entry.seq) break;
+    if (e.kind === 'receipt' && e.object.issuer === r.issuer) prev = e.entry_hash;
+  }
+  checks.push(['per-issuer chain link', r.prev_receipt_hash === prev, 'prev_receipt_hash matches issuer chain']);
+  let approvalVerdict = null;
+  if (r.approval) {
+    const aEntry = byKindId('approval', 'approval_id', r.approval.approval_id);
+    if (!aEntry) { checks.push(['approval exists', false, r.approval.approval_id]); approvalVerdict = 'INVALID'; }
+    else {
+      const a = aEntry.object;
+      checks.push(['approval exists', true, a.approval_id]);
+      const asig = await sigValid(a, a.approver);
+      checks.push(['approval signature', asig, a.approver]);
+      checks.push(['approval subject == receipt issuer', a.subject === r.issuer, a.subject]);
+      const rev = ENTRIES.find(e => e.kind === 'revocation' && e.object.approval_id === a.approval_id);
+      checks.push(['approval not revoked', !rev, rev ? `revoked at ${rev.object.revoked_at}` : 'no revocation in log']);
+      const tExp = a.expires_at && new Date().toISOString() > a.expires_at;
+      if (a.expires_at) checks.push(['approval not time-expired', !tExp, a.expires_at]);
+      const chg = r.approval.approval_target_hash !== a.target.target_hash;
+      checks.push(['approval target unchanged (expiry-on-change)', !chg, 'target fingerprint match']);
+      const typeOk = r.action.type === a.scope.action_type;
+      checks.push(['approval scope match (action type)', typeOk, a.scope.action_type]);
+      approvalVerdict = (!asig || a.subject !== r.issuer || !typeOk) ? 'INVALID'
+        : rev ? 'REVOKED' : tExp ? 'EXPIRED' : chg ? 'EXPIRED (target changed)' : 'VALID';
+      if (approvalVerdict !== 'VALID') checks.push(['approval verdict', false, approvalVerdict]);
+    }
+  }
+  const allOk = checks.every(c => c[1]) && approvalVerdict !== 'INVALID';
+  const rows = checks.map(c => `<tr><td>${c[1] ? '✅' : '❌'}</td><td>${c[0]}</td><td class="small">${c[2]}</td></tr>`).join('');
+  const issueUrl = 'https://github.com/jbsilver96/jbsilver96.github.io/issues/new?title=' +
+    encodeURIComponent('verify:' + rid) + '&body=' +
+    encodeURIComponent('I verified receipt ' + rid + ' in my browser. Verdict: ' + (allOk ? 'VALID' : 'INVALID') + '\nVerifier (optional — agent name / handle): ');
+  out.innerHTML = `<div class="card">
+    <span class="verdict ${allOk ? 'ok' : 'bad'}">${allOk ? '✅ VALID' : '❌ INVALID'}</span>
+    <p class="mono">${rid}</p>
+    <p><strong>${r.action.type}</strong> by ${r.issuer_label} · issued ${r.issued_at}` +
+    (r.action.artifact_url ? `<br>Artifact: <a href="${r.action.artifact_url}">${r.action.artifact_url}</a>` : '') + `</p>
+    <table>${rows}</table>
+    <p><strong>This receipt does not assert:</strong></p>
+    <ul>${DOES_NOT_ASSERT.map(d => `<li>${d}</li>`).join('')}</ul>
+    <p class="small">Counted yourself as an external verifier?
+    <a href="${issueUrl}" target="_blank" rel="noopener">Log this verification</a>
+    (opens a GitHub issue — our honest, voluntary counter; silent checks are real but uncounted).</p>
+  </div>`;
+  location.hash = rid;
+}
+
+async function main() {
+  const [logText, regText] = await Promise.all([
+    fetch('receipts.jsonl').then(r => r.text()),
+    fetch('registry.json').then(r => r.json()),
+  ]);
+  ENTRIES = logText.split('\n').filter(l => l.trim()).map(l => JSON.parse(l));
+  REGISTRY = regText;
+  const counts = {};
+  for (const e of ENTRIES) if (e.kind === 'receipt')
+    counts[e.object.issuer_label] = (counts[e.object.issuer_label] || 0) + 1;
+  document.getElementById('registry').innerHTML =
+    '<table><tr><th>Issuer</th><th>DID</th><th>Receipts</th><th>Status</th></tr>' +
+    REGISTRY.issuers.map(i => `<tr><td>${i.label}</td><td class="mono">${i.did}</td><td>${counts[i.label] || 0}</td><td>${i.status}</td></tr>`).join('') + '</table>';
+  document.getElementById('log').innerHTML =
+    '<table><tr><th>#</th><th>Kind</th><th>What</th><th>When</th><th></th></tr>' +
+    [...ENTRIES].reverse().map(e => {
+      const o = e.object;
+      const what = e.kind === 'receipt' ? `${o.action.type} — ${o.issuer_label}`
+        : e.kind === 'approval' ? `approval for ${o.scope.action_type} — ${o.approver_label}`
+        : e.kind === 'revocation' ? `revocation of ${o.approval_id}` : e.kind;
+      const btn = e.kind === 'receipt' ? `<button data-verify="${o.receipt_id}">verify</button>` : '';
+      return `<tr><td>${e.seq}</td><td>${e.kind}</td><td>${what}</td><td class="small">${e.ts}</td><td>${btn}</td></tr>`;
+    }).join('') + '</table>';
+  document.querySelectorAll('[data-verify]').forEach(b =>
+    b.addEventListener('click', () => verifyReceipt(b.dataset.verify)));
+  const h = location.hash.slice(1);
+  if (h.startsWith('rcpt_')) verifyReceipt(h);
+}
+document.getElementById('go').addEventListener('click', () =>
+  verifyReceipt(document.getElementById('rid').value.trim()));
+main().catch(e => {
+  document.getElementById('log').innerHTML =
+    '<p class="bad">Failed to load the log: ' + e.message + '</p>';
+});
+</script>
+</body>
+</html>

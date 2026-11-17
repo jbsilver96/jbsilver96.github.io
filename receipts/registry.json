@@ -1,0 +1,45 @@
+{
+  "issuers": [
+    {
+      "did": "did:key:z6MkwB88YSpduPYgbL9CPm3bnNCzgb7NxuLnvMHLNFZgkGJs",
+      "first_seen": "2026-11-17T20:59:34Z",
+      "kind": "fleet-agent",
+      "label": "muse",
+      "public_key_b64u": "-HRvioBDSPpAE3n0UYBiEI20rbS56JG7gAnYfhM3zlA",
+      "status": "active"
+    },
+    {
+      "did": "did:key:z6MkhwynbbvzuGj4QpUtAGNJmu9jc4nEonAfwcyZUy5FCyFb",
+      "first_seen": "2026-11-17T20:59:34Z",
+      "kind": "fleet-agent",
+      "label": "scout",
+      "public_key_b64u": "M-6FS1q7hA8eiDXBvGdrKjYRCMCk-PoLdZqxzP0LNcY",
+      "status": "active"
+    },
+    {
+      "did": "did:key:z6MkpN6uTeutxx5QJb5GXeJERFXimj3RzUc2hQKnfvMCgHuE",
+      "first_seen": "2026-11-17T20:59:34Z",
+      "kind": "fleet-agent",
+      "label": "researcher",
+      "public_key_b64u": "k0KhYD2ocRzecQI6FMdbqKgQrdCPDo1-mQQXmOab4Z0",
+      "status": "active"
+    },
+    {
+      "did": "did:key:z6Mkv6jZFetnP4pm2VAtsHgqMtSHkeWx2FXAKeJfVnQTBN7i",
+      "first_seen": "2026-11-17T20:59:34Z",
+      "kind": "fleet-agent",
+      "label": "arbiter",
+      "public_key_b64u": "6HjmrdD528uC9ESXkIFJWFTFs_hGbLmrWRIGiu3sc0k",
+      "status": "active"
+    },
+    {
+      "did": "did:key:z6Mkfytzysj75EBsRAkDPom1kWDbTJW3PRgEuxmRRQ6UPgkw",
+      "first_seen": "2026-11-17T20:59:34Z",
+      "kind": "approver",
+      "label": "johnny",
+      "public_key_b64u": "FrTld2kli7J0IkTYoIU7DUxDfOITareDgZ-Z3U7n3nA",
+      "status": "active"
+    }
+  ],
+  "registry_version": "0.1"
+}
