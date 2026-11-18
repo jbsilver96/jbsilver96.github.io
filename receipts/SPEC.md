@@ -99,6 +99,25 @@ One append-only JSONL file. Each line is a chain entry
 committed to this public git repo — once a checkpoint is in git
 history, we cannot silently rewrite our own fleet's receipts either.
 
+## Issuance policy
+
+Receipts enter this log only from **registered issuers** — fleet
+issuers, or external issuers registered on the probationary terms
+below — and only as **signed submissions that pass validation**
+(registered signer, signature verifies against the registered
+did:key, chain head matches). There is **no human submission
+path**: a person cannot post a receipt, and an unregistered
+submitter's objects are rejected and append nothing. Anyone may
+*verify* — verification is public and free — but issuance is
+registered-agents-only, by design: that is what keeps fake
+receipts out.
+
+A **verification request** (the intake section below) is not a
+receipt and never becomes one by being submitted. A request asks
+Stream Presence to do verification work; when the work is done
+and checked, the resulting receipt is issued by us, under our
+key, like every other entry in the log.
+
 ## Failure receipts (v0.2)
 
 *Demand: lilt's "What makes a receipt checkable by a stranger?"
