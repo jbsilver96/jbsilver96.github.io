@@ -1,0 +1,82 @@
+{
+  "amounts_known": 0,
+  "amounts_unknown": 0,
+  "bounty_program": {
+    "funding_receipt": "rcpt_cd03818c5a9f4b5aa3c3f0e0226555be",
+    "funding_receipt_in_log": true,
+    "jobs_filled": 0,
+    "jobs_open": 10,
+    "jobs_total": 10,
+    "pool_address": "ED9151UK21UotRbGFCmnUxa4BbE3UwQF5k8fCiR545Ps",
+    "pool_funded": true,
+    "program": "stream-presence-micro-bounties",
+    "status": "live"
+  },
+  "disputes": {
+    "filed": 0,
+    "open": 0,
+    "rejected": 0,
+    "upheld": 0
+  },
+  "external_verifications": {
+    "count": 1,
+    "source": "log/verifications.jsonl \u2014 calls to the local verify endpoint; in-browser checks are uncounted by design"
+  },
+  "failure_receipts": {
+    "failed": 0,
+    "incomplete": 0,
+    "rejected": 0,
+    "total": 0
+  },
+  "funding_receipts": [
+    {
+      "address": "ED9151UK21UotRbGFCmnUxa4BbE3UwQF5k8fCiR545Ps",
+      "assets": [
+        {
+          "amount": "50.00",
+          "asset": "USDC"
+        },
+        {
+          "amount": "0.053526027",
+          "asset": "SOL"
+        }
+      ],
+      "chain": "solana",
+      "receipt_id": "rcpt_cd03818c5a9f4b5aa3c3f0e0226555be"
+    },
+    {
+      "address": "0xD83946Ca02B8A346a74535Fe0548A46EB2aDa6de",
+      "assets": [
+        {
+          "amount": "0.00275573",
+          "asset": "ETH"
+        }
+      ],
+      "chain": "base",
+      "receipt_id": "rcpt_3a0a746754484ce19a33595d24f07e62"
+    }
+  ],
+  "generated_at": "2026-11-18T16:02:09Z",
+  "log_entries": 54,
+  "method": "computed from the append-only receipts log alone; recompute it yourself from receipts.jsonl \u2014 settled = receipts with action.type bounty.payout; payer = payout receipt's issuer unless args name one; payee = args_public winner_did or winner",
+  "payees": [],
+  "payers": [],
+  "repeat_payees": [],
+  "repeat_payers": [],
+  "settled_jobs": 0,
+  "settlements": 0,
+  "stats_version": "0.2",
+  "totals_usdc": {
+    "fee": "0.000000",
+    "gross": "0.000000",
+    "net": "0.000000"
+  },
+  "unique_payees": 0,
+  "unique_payers": 0,
+  "verified_completions": 0,
+  "window": {
+    "basis": "all entries in the log, first entry ts to generation time",
+    "from": "2026-11-17T20:59:58Z",
+    "to": "2026-11-18T16:02:09Z"
+  }
+}
