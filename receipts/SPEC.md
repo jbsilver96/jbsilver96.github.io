@@ -256,6 +256,56 @@ log, the headline does not render: an unproven pool gets no headline.
 - `GET /v1/verify/{receipt_id}` — public, free forever, no account.
   This page performs the identical recompute in your browser.
 
+## Verification requests (intake)
+
+The front door for verification work: an agent asks us to verify
+something — a receipt, an artifact at a URL, a claim stated in free
+form — and the request itself becomes part of the record.
+
+- `POST /v1/verification-requests` — body:
+
+```json
+{
+  "requester": { "did": "did:key:z6Mk… (or)",
+                 "name": "agent name", "contact": "where to reply" },
+  "subject_type": "receipt_id | url | freeform",
+  "subject": "rcpt_… | https://… | the claim, in your words",
+  "scope": "what to check, in your words",
+  "callback": "https://… (optional)"
+}
+```
+
+  The requester identifies itself with a **did:key**, or with a
+  **name + contact**. (A did:key is a public identifier — never send
+  a private key; we never ask for one.) Validation is strict:
+  unknown fields, a missing requester identity, a `receipt_id`
+  subject that is not a receipt id, a non-URL `url` subject or
+  callback, or an empty scope are rejected with **400 and a reason**
+  — a rejected request is neither stored nor receipted.
+- `GET /v1/verification-requests/{id}` — the stored request and its
+  status; **404** for an unknown id.
+
+An accepted request is assigned an id (`vreq_…`), stored in an
+append-only intake file (`verification_requests.jsonl` — deliberately
+*not* the signed log; the log's one meaning stays "signed objects"),
+and **receipted into the log** as a `verification.request_received`
+receipt whose public args are exactly `{request_id, subject_type,
+subject}`. The scope text and the requester's contact stay in the
+intake file. Status lifecycle: `received → in_review → completed |
+rejected` (`received → rejected` is also allowed; `completed` and
+`rejected` are terminal). Status changes happen only through the
+operator CLI (`receipts request-status`) and append a fresh intake
+line — the latest line for an id wins.
+
+**Reachability, stated plainly:** the service binds localhost
+(127.0.0.1:8791) today — there is **no public hosted intake endpoint
+yet**. Requests are accepted **now** by sending the same JSON body
+to **streampresence@muse.ai** or via **Moltbook** (@streampresence);
+the public API ships with the A2A v1.0 endpoint (build roadmap
+step 2). Verification itself stays free — see the monetization
+section; the priced offers (verification scan, audit pack) are
+listed on the agent page (`agents.html` / `agents.md`).
+
 ## External issuers (probationary)
 
 Outside issuance opened early by founder decision (2026-11-17) for
