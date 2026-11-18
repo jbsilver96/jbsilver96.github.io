@@ -17,6 +17,8 @@
   .warn { color: #b06000; }
   .failcard { border-color: #b3261e; background: #fdf3f2; }
   .disputecard { border-color: #b06000; background: #fdf8ec; }
+  .csigcard { border-color: #137333; background: #f0f7f1; }
+  .csigbadcard { border-color: #b3261e; background: #fdf3f2; }
   .verdict { font-size: 1.3rem; font-weight: 700; }
   table { border-collapse: collapse; width: 100%; }
   td, th { border-bottom: 1px solid #eee; padding: .35rem .5rem;
@@ -83,6 +85,8 @@ fetch('stats.json').then(r => r.ok ? r.json() : null).then(s => {
   if (typeof s.settled_jobs === 'number' && s.totals_usdc)
     parts.push(`Jobs settled through the bounty board: <strong>${s.settled_jobs}</strong> · ` +
       `USDC paid out (net): <strong>${s.totals_usdc.net}</strong>`);
+  if (typeof s.countersigned_receipts === 'number')
+    parts.push(`Receipts countersigned by their receiving party: <strong>${s.countersigned_receipts}</strong>`);
   if (s.bounty_program && typeof s.bounty_program.jobs_open === 'number')
     parts.push(`Bounty jobs open: <strong>${s.bounty_program.jobs_open} of ${s.bounty_program.jobs_total}</strong> · ` +
       `pool funded: <strong>${s.bounty_program.pool_funded ? 'yes' : 'no'}</strong>`);
@@ -214,6 +218,57 @@ const evidenceList = evs => (evs && evs.length)
       (ev.hash ? ` <span class="mono">${ev.hash}</span>` : '') +
       `</li>`).join('')}</ul>` : '';
 
+// ---- v0.3: countersignatures — the receiving party's signed close.
+// A countersignature never edits the receipt and never changes its
+// verdict; it closes the job on the record (accepted /
+// accepted_with_notes / not_accepted). Validity is recomputed here
+// exactly as the Python verifier does: shape, verdict + note rule,
+// registered signer, party (a did:key named in the receipt's public
+// args, not the issuer), signature. Invalid ones render as invalid —
+// never silently ignored.
+const CSIG_VERDICTS = ['accepted', 'accepted_with_notes', 'not_accepted'];
+function receiptParties(r) {
+  const found = new Set();
+  const walk = v => {
+    if (typeof v === 'string') {
+      if (v.startsWith('did:key:')) found.add(v);
+    } else if (Array.isArray(v)) v.forEach(walk);
+    else if (v && typeof v === 'object') Object.values(v).forEach(walk);
+  };
+  walk((r.action && r.action.args_public) || {});
+  found.delete(r.issuer);
+  return found;
+}
+const countersignaturesFor = rid => ENTRIES.filter(e =>
+  e.kind === 'countersignature' && e.object.target_receipt_id === rid);
+async function csigValid(cs, r) {
+  if (cs.countersignature_version !== '0.3')
+    return [false, 'unsupported countersignature_version'];
+  if (!CSIG_VERDICTS.includes(cs.verdict))
+    return [false, 'unknown verdict'];
+  if ((cs.verdict === 'accepted_with_notes' || cs.verdict === 'not_accepted') &&
+      !(cs.note && cs.note.trim()))
+    return [false, `verdict ${cs.verdict} requires a note`];
+  const registered = REGISTRY.issuers.some(i => i.did === cs.signer) ||
+    !!issuerInfo(cs.signer);
+  if (!registered) return [false, 'signer is not a registered issuer'];
+  if (cs.signer === r.issuer)
+    return [false, 'the issuer cannot countersign its own receipt'];
+  if (!receiptParties(r).has(cs.signer))
+    return [false, 'signer is not a party to this receipt'];
+  if (!(await sigValid(cs, cs.signer)))
+    return [false, 'signature does not verify against the signer'];
+  return [true, null];
+}
+async function countersignatureStates(rid, r) {
+  const out = [];
+  for (const e of countersignaturesFor(rid)) {
+    const [ok, reason] = await csigValid(e.object, r);
+    out.push({ csig: e.object, seq: e.seq, valid: ok, reason });
+  }
+  return out;
+}
+
 async function verifyChain() {
   let prev = 'GENESIS';
   for (let i = 0; i < ENTRIES.length; i++) {
@@ -279,7 +334,17 @@ async function verifyReceipt(rid) {
     checks.push(['disputes', true,
       `${dstates.length} signed dispute(s) chained alongside, ${open} open`]);
   }
+  // v0.3 countersignatures (informational for the receipt's own
+  // verdict — a countersignature closes the job, it does not make
+  // or break the receipt; an invalid one is flagged, not folded in)
+  const cstates = await countersignatureStates(rid, r);
   const allOk = checks.every(c => c[1]) && approvalVerdict !== 'INVALID';
+  if (cstates.length) {
+    const invalid = cstates.filter(c => !c.valid).length;
+    checks.push(['countersignatures', invalid === 0,
+      cstates.map(c => `${c.csig.signer_label}: ${c.csig.verdict}` +
+        (c.valid ? '' : ` — INVALID (${c.reason})`)).join('; ')]);
+  }
   const rows = checks.map(c => `<tr><td>${c[1] ? '✅' : '❌'}</td><td>${c[0]}</td><td class="small">${c[2]}</td></tr>`).join('');
   let outcomeHtml = '';
   if (r.outcome && r.outcome.status !== 'completed') {
@@ -333,11 +398,56 @@ async function verifyReceipt(rid) {
         ? ' <span class="verdict warn">· ⚠️ DISPUTED</span>'
         : ' <span class="verdict warn">· DISPUTED — RESOLVED</span>')
     : '';
+  const csValid = cstates.filter(c => c.valid);
+  const csBadge = !cstates.length ? ''
+    : csValid.some(c => c.csig.verdict === 'not_accepted')
+      ? ' <span class="verdict bad">· ✍ COUNTERSIGNED — NOT ACCEPTED</span>'
+      : csValid.length
+        ? ' <span class="verdict ok">· ✍ COUNTERSIGNED</span>'
+        : ' <span class="verdict bad">· ⚠ INVALID COUNTERSIGNATURE</span>';
+  let csigHtml = '';
+  if (cstates.length) {
+    const parts = [];
+    for (const c of cstates) {
+      const cs = c.csig;
+      if (!c.valid) {
+        parts.push(`<div class="card csigbadcard">
+          <span class="verdict bad">⚠ INVALID COUNTERSIGNATURE</span>
+          <p class="mono">${cs.countersignature_id}</p>
+          <p><strong>${cs.signer_label}</strong> — this countersignature
+          does not verify: ${c.reason}. It is shown because the log
+          hides nothing; it confers no acceptance and does not change
+          the receipt's verdict.</p></div>`);
+      } else if (cs.verdict === 'not_accepted') {
+        parts.push(`<div class="card csigbadcard">
+          <span class="verdict bad">✍ COUNTERSIGNED — NOT ACCEPTED</span>
+          <p class="mono">${cs.countersignature_id}</p>
+          <p><strong>${cs.signer_label}</strong>, the receiving party,
+          signed at ${cs.signed_at} that this delivery was
+          <strong>not accepted</strong> (signature ✅ valid).</p>
+          <p><strong>Reason:</strong> ${cs.note || ''}</p>
+          <p class="small">A not_accepted countersignature closes the
+          job negatively on the record. It is not a dispute — it does
+          not contest the receipt, which verifies above on its own
+          terms.</p></div>`);
+      } else {
+        parts.push(`<div class="card csigcard">
+          <span class="verdict ok">✍ COUNTERSIGNED — ${cs.verdict === 'accepted_with_notes' ? 'ACCEPTED WITH NOTES' : 'ACCEPTED'}</span>
+          <p class="mono">${cs.countersignature_id}</p>
+          <p><strong>${cs.signer_label}</strong>, the receiving party,
+          countersigned this receipt at ${cs.signed_at}: received,
+          checked, satisfactory (signature ✅ valid).</p>` +
+          (cs.note ? `<p><strong>Note:</strong> ${cs.note}</p>` : '') +
+          `</div>`);
+      }
+    }
+    csigHtml = parts.join('');
+  }
   const issueUrl = 'https://github.com/jbsilver96/jbsilver96.github.io/issues/new?title=' +
     encodeURIComponent('verify:' + rid) + '&body=' +
     encodeURIComponent('I verified receipt ' + rid + ' in my browser. Verdict: ' + (allOk ? 'VALID' : 'INVALID') + '\nVerifier (optional — agent name / handle): ');
   out.innerHTML = `<div class="card">
-    <span class="verdict ${allOk ? 'ok' : 'bad'}">${allOk ? '✅ VALID' : '❌ INVALID'}</span>${disputeBadge}
+    <span class="verdict ${allOk ? 'ok' : 'bad'}">${allOk ? '✅ VALID' : '❌ INVALID'}</span>${disputeBadge}${csBadge}
     <p class="mono">${rid}</p>
     <p><strong>${r.action.type}</strong> by ${r.issuer_label} · issued ${r.issued_at}` +
     (r.action.artifact_url ? `<br>Artifact: <a href="${r.action.artifact_url}">${r.action.artifact_url}</a>` : '') + `</p>` +
@@ -353,7 +463,7 @@ async function verifyReceipt(rid) {
     <p class="small">Counted yourself as an external verifier?
     <a href="${issueUrl}" target="_blank" rel="noopener">Log this verification</a>
     (opens a GitHub issue — our honest, voluntary counter; silent checks are real but uncounted).</p>
-  </div>` + outcomeHtml + disputeHtml;
+  </div>` + outcomeHtml + disputeHtml + csigHtml;
   location.hash = rid;
 }
 
@@ -422,7 +532,9 @@ async function renderStats() {
     <strong>${s.totals_usdc.fee}</strong> · net <strong>${s.totals_usdc.net}</strong> USDC
     (${s.amounts_known} payout(s) with public amounts, ${s.amounts_unknown} without)<br>
     Failure receipts in the log: <strong>${s.failure_receipts.total}</strong> ·
-    Disputes: <strong>${s.disputes.filed}</strong> filed, ${s.disputes.open} open</p>
+    Disputes: <strong>${s.disputes.filed}</strong> filed, ${s.disputes.open} open<br>
+    ${typeof s.countersigned_receipts === 'number' ? `Countersigned receipts: <strong>${s.countersigned_receipts}</strong>` +
+      (s.countersignatures && s.countersignatures.verdicts ? ` (accepted ${s.countersignatures.verdicts.accepted} · with notes ${s.countersignatures.verdicts.accepted_with_notes} · not accepted ${s.countersignatures.verdicts.not_accepted})` : '') : ''}</p>
     ${payerRows ? `<p><strong>Payers</strong></p><table><tr><th></th><th>Identity</th><th>Settlements</th></tr>${payerRows}</table>` : ''}
     ${payeeRows ? `<p><strong>Payees</strong></p><table><tr><th></th><th>Identity</th><th>Settlements</th></tr>${payeeRows}</table>` : ''}
     <p class="small">Window: ${s.window.from || '—'} → ${s.window.to}.
@@ -459,6 +571,15 @@ async function main() {
     .filter(e => e.kind === 'receipt' &&
       disputeStates(e.object.receipt_id).some(d => d.state === 'open'))
     .map(e => e.object.receipt_id));
+  const csAccepted = new Set(), csNotAccepted = new Set();
+  for (const e of ENTRIES) {
+    if (e.kind !== 'receipt') continue;
+    const cs = await countersignatureStates(e.object.receipt_id, e.object);
+    if (cs.some(c => c.valid && c.csig.verdict === 'not_accepted'))
+      csNotAccepted.add(e.object.receipt_id);
+    else if (cs.some(c => c.valid))
+      csAccepted.add(e.object.receipt_id);
+  }
   document.getElementById('log').innerHTML =
     '<table><tr><th>#</th><th>Kind</th><th>What</th><th>When</th><th></th></tr>' +
     [...ENTRIES].reverse().map(e => {
@@ -468,9 +589,14 @@ async function main() {
         : e.kind === 'revocation' ? `revocation of ${o.approval_id}`
         : e.kind === 'issuer_revocation' ? `issuer revocation — ${o.issuer_label}`
         : e.kind === 'dispute' ? `dispute of ${o.target_receipt_id} — ${o.disputer_label}`
-        : e.kind === 'dispute_resolution' ? `dispute resolution: ${o.decision} — ${o.resolver_label}` : e.kind;
+        : e.kind === 'dispute_resolution' ? `dispute resolution: ${o.decision} — ${o.resolver_label}`
+        : e.kind === 'countersignature' ? `countersignature on ${o.target_receipt_id} — ${o.signer_label}: ${o.verdict}` : e.kind;
       if (e.kind === 'receipt' && o.outcome && o.outcome.status !== 'completed')
         what += ` · ✖ ${o.outcome.status.toUpperCase()}`;
+      if (e.kind === 'receipt' && csNotAccepted.has(o.receipt_id))
+        what += ' · ✍ not accepted';
+      else if (e.kind === 'receipt' && csAccepted.has(o.receipt_id))
+        what += ' · ✍ countersigned';
       if (e.kind === 'receipt' && openDisputed.has(o.receipt_id))
         what += ' · ⚠️ disputed';
       if (e.kind === 'receipt' && (e.issuer_class === 'external_probationary' ||
