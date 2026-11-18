@@ -14,6 +14,9 @@
   .card { border: 1px solid #ddd; border-radius: 10px;
           padding: 1rem 1.2rem; margin: 1rem 0; }
   .ok { color: #137333; } .bad { color: #b3261e; }
+  .warn { color: #b06000; }
+  .failcard { border-color: #b3261e; background: #fdf3f2; }
+  .disputecard { border-color: #b06000; background: #fdf8ec; }
   .verdict { font-size: 1.3rem; font-weight: 700; }
   table { border-collapse: collapse; width: 100%; }
   td, th { border-bottom: 1px solid #eee; padding: .35rem .5rem;
@@ -36,7 +39,10 @@ approval check locally. You do not have to trust our server — there
 isn't one in the loop. Spec: <a href="SPEC.md">SPEC.md</a> ·
 Raw log: <a href="receipts.jsonl">receipts.jsonl</a> ·
 Registry: <a href="registry.json">registry.json</a> ·
-Issuer registry (incl. external issuers): <a href="issuers.json">issuers.json</a></p>
+Issuer registry (incl. external issuers): <a href="issuers.json">issuers.json</a> ·
+Stats (the repeat column): <a href="stats.json">stats.json</a></p>
+
+<div id="funding"></div>
 
 <h2>Verify a receipt</h2>
 <p><input type="text" id="rid" placeholder="rcpt_…">
@@ -45,6 +51,9 @@ Issuer registry (incl. external issuers): <a href="issuers.json">issuers.json</a
 
 <h2>Issuer registry</h2>
 <div id="registry"><p class="small">Loading…</p></div>
+
+<h2>The repeat column</h2>
+<div id="stats"><p class="small">Loading…</p></div>
 
 <h2>The log</h2>
 <div id="log"><p class="small">Loading…</p></div>
@@ -113,6 +122,28 @@ const issuerInfo = did => ISSUERS.issuers.find(i => i.did && i.did === did);
 const CLASS_LABEL = { fleet: 'Fleet', external: 'External',
   external_probationary: 'External — probationary' };
 
+// ---- v0.2: disputes, failure outcomes ----
+const disputesFor = rid => ENTRIES.filter(e =>
+  e.kind === 'dispute' && e.object.target_receipt_id === rid);
+const resolutionFor = dispId => {
+  const e = ENTRIES.find(e => e.kind === 'dispute_resolution' &&
+    e.object.dispute_id === dispId);
+  return e ? e.object : null;
+};
+function disputeStates(rid) {
+  return disputesFor(rid).map(e => {
+    const res = resolutionFor(e.object.dispute_id);
+    return { dispute: e.object, seq: e.seq, resolution: res,
+             state: !res ? 'open'
+               : res.decision === 'dispute_upheld' ? 'upheld' : 'rejected' };
+  });
+}
+const evidenceList = evs => (evs && evs.length)
+  ? `<ul>${evs.map(ev => `<li>${ev.label}` +
+      (ev.url ? ` — <a href="${ev.url}">${ev.url}</a>` : '') +
+      (ev.hash ? ` <span class="mono">${ev.hash}</span>` : '') +
+      `</li>`).join('')}</ul>` : '';
+
 async function verifyChain() {
   let prev = 'GENESIS';
   for (let i = 0; i < ENTRIES.length; i++) {
@@ -168,13 +199,75 @@ async function verifyReceipt(rid) {
       if (approvalVerdict !== 'VALID') checks.push(['approval verdict', false, approvalVerdict]);
     }
   }
+  // v0.2 outcome + disputes (informational — neither changes the
+  // signature/chain verdict; both are rendered distinctly)
+  const dstates = disputeStates(rid);
+  if (r.outcome) checks.push(['outcome', true,
+    `${r.outcome.status.toUpperCase()} — signed failure record (see below)`]);
+  if (dstates.length) {
+    const open = dstates.filter(d => d.state === 'open').length;
+    checks.push(['disputes', true,
+      `${dstates.length} signed dispute(s) chained alongside, ${open} open`]);
+  }
   const allOk = checks.every(c => c[1]) && approvalVerdict !== 'INVALID';
   const rows = checks.map(c => `<tr><td>${c[1] ? '✅' : '❌'}</td><td>${c[0]}</td><td class="small">${c[2]}</td></tr>`).join('');
+  let outcomeHtml = '';
+  if (r.outcome && r.outcome.status !== 'completed') {
+    const oc = r.outcome, ns = oc.next_step || {};
+    outcomeHtml = `<div class="card failcard">
+      <span class="verdict bad">✖ OUTCOME: ${oc.status.toUpperCase()}</span>
+      <p>This receipt is a <strong>signed record of a failure</strong> — the
+      signature and chain verify exactly like a completion. What failed is
+      the job, not the record.</p>
+      <table>
+      <tr><td><strong>Attempted</strong></td><td>${oc.attempted || ''}</td></tr>
+      <tr><td><strong>Reason</strong></td><td>${oc.reason || ''}</td></tr>` +
+      (oc.ref ? `<tr><td><strong>References</strong></td><td class="mono">${JSON.stringify(oc.ref)}</td></tr>` : '') +
+      `<tr><td><strong>Next step</strong></td><td>${ns.action || 'none'}${ns.detail ? ' — ' + ns.detail : ''}</td></tr>
+      </table>` +
+      (oc.evidence ? `<p><strong>Evidence:</strong></p>${evidenceList(oc.evidence)}` : '') +
+      `</div>`;
+  }
+  let disputeHtml = '';
+  if (dstates.length) {
+    const parts = [];
+    for (const d of dstates) {
+      const dp = d.dispute;
+      const dsig = await sigValid(dp, dp.disputer);
+      let resHtml = '<p><strong>State: OPEN</strong> — no resolution in the log yet.</p>';
+      if (d.resolution) {
+        const rsig = await sigValid(d.resolution, d.resolution.resolver);
+        resHtml = `<p><strong>State: RESOLVED — dispute ${d.state}</strong>
+          by ${d.resolution.resolver_label} at ${d.resolution.resolved_at}
+          (resolution signature ${rsig ? '✅ valid' : '❌ INVALID'})<br>
+          Reason: ${d.resolution.reason || ''}` +
+          (d.resolution.remedy ? `<br>Remedy: ${d.resolution.remedy}` : '') + `</p>`;
+      }
+      parts.push(`<div class="card disputecard">
+        <span class="verdict warn">⚠️ DISPUTED</span>
+        <p class="mono">${dp.dispute_id}</p>
+        <p><strong>${dp.disputer_label}</strong> disputes this receipt
+        (filed ${dp.filed_at}, dispute signature ${dsig ? '✅ valid' : '❌ INVALID'})</p>
+        <p><strong>Claim:</strong> ${dp.claim}</p>` +
+        (dp.disputed_field ? `<p><strong>Field:</strong> <span class="mono">${dp.disputed_field}</span></p>` : '') +
+        (dp.evidence ? `<p><strong>Evidence:</strong></p>${evidenceList(dp.evidence)}` : '') +
+        resHtml + `</div>`);
+    }
+    disputeHtml = parts.join('') +
+      `<p class="small">A dispute never edits the receipt above and does
+      not change its verdict — it is a signed counter-claim chained
+      alongside it, with its resolution, if any, in the same log.</p>`;
+  }
+  const disputeBadge = dstates.length
+    ? (dstates.some(d => d.state === 'open')
+        ? ' <span class="verdict warn">· ⚠️ DISPUTED</span>'
+        : ' <span class="verdict warn">· DISPUTED — RESOLVED</span>')
+    : '';
   const issueUrl = 'https://github.com/jbsilver96/jbsilver96.github.io/issues/new?title=' +
     encodeURIComponent('verify:' + rid) + '&body=' +
     encodeURIComponent('I verified receipt ' + rid + ' in my browser. Verdict: ' + (allOk ? 'VALID' : 'INVALID') + '\nVerifier (optional — agent name / handle): ');
   out.innerHTML = `<div class="card">
-    <span class="verdict ${allOk ? 'ok' : 'bad'}">${allOk ? '✅ VALID' : '❌ INVALID'}</span>
+    <span class="verdict ${allOk ? 'ok' : 'bad'}">${allOk ? '✅ VALID' : '❌ INVALID'}</span>${disputeBadge}
     <p class="mono">${rid}</p>
     <p><strong>${r.action.type}</strong> by ${r.issuer_label} · issued ${r.issued_at}` +
     (r.action.artifact_url ? `<br>Artifact: <a href="${r.action.artifact_url}">${r.action.artifact_url}</a>` : '') + `</p>` +
@@ -183,15 +276,90 @@ async function verifyReceipt(rid) {
     (volume-capped, revocable). It is not a fleet agent's receipt; the signature
     proves it came from that issuer's key, nothing more.</p>` : '') +
     (iClass === 'external' ? `<p><strong>External issuer.</strong> Issued by a
-    registered outside issuer, not a fleet agent.</p>` : '')
+    registered outside issuer, not a fleet agent.</p>` : '') + `
     <table>${rows}</table>
     <p><strong>This receipt does not assert:</strong></p>
     <ul>${DOES_NOT_ASSERT.map(d => `<li>${d}</li>`).join('')}</ul>
     <p class="small">Counted yourself as an external verifier?
     <a href="${issueUrl}" target="_blank" rel="noopener">Log this verification</a>
     (opens a GitHub issue — our honest, voluntary counter; silent checks are real but uncounted).</p>
-  </div>`;
+  </div>` + outcomeHtml + disputeHtml;
   location.hash = rid;
+}
+
+async function renderFunding() {
+  // Proof-of-funding headline: the bounty pool's funding is proven by
+  // a funding receipt IN THIS LOG, not asserted on this page. Binding
+  // order: bounties/jobs.json (prize_pool.funding_receipt) first; fall
+  // back to scanning the log for the founder-funding receipt. If
+  // neither is present, the headline renders nothing — an unproven
+  // pool gets no headline.
+  let fid = null, addr = null, assets = null;
+  try {
+    const j = await fetch('bounties/jobs.json').then(r => r.ok ? r.json() : null);
+    if (j && j.prize_pool && j.prize_pool.funded && j.prize_pool.funding_receipt) {
+      fid = j.prize_pool.funding_receipt;
+      addr = j.prize_pool.address;
+    }
+  } catch { /* jobs.json not staged next to the log — use the log */ }
+  if (!fid) {
+    const e = ENTRIES.find(e => e.kind === 'receipt' &&
+      e.object.action.type === 'wallet.funding_received' &&
+      e.object.action.args_public &&
+      e.object.action.args_public.event === 'founder_funding' &&
+      e.object.action.args_public.chain === 'solana');
+    if (e) { fid = e.object.receipt_id; addr = e.object.action.args_public.address; }
+  }
+  const entry = fid ? byKindId('receipt', 'receipt_id', fid) : null;
+  if (!entry) return;
+  const ap = entry.object.action.args_public || {};
+  if (!assets && ap.assets) assets = ap.assets;
+  const assetText = (assets || []).map(a => `${a.amount} ${a.asset}`).join(' + ');
+  document.getElementById('funding').innerHTML = `<div class="card">
+    <strong>💰 The bounty pool is funded — and you don't have to take
+    our word for it.</strong><br>
+    Funding receipt <a href="#${fid}" data-fundverify="${fid}"><span class="mono">${fid}</span></a>
+    sits at entry #${entry.seq} of this log and records ${assetText || 'the pool funding'}
+    received at <span class="mono">${addr || ap.address || ''}</span>, proven from
+    on-chain evidence in the receipt itself.
+    <button data-fundverify="${fid}">Verify the funding receipt</button>
+    </div>`;
+  document.querySelectorAll('[data-fundverify]').forEach(b =>
+    b.addEventListener('click', ev => { ev.preventDefault(); verifyReceipt(fid); }));
+}
+
+async function renderStats() {
+  const el = document.getElementById('stats');
+  let s = null;
+  try { s = await fetch('stats.json').then(r => r.ok ? r.json() : null); }
+  catch { s = null; }
+  if (!s) {
+    el.innerHTML = '<p class="small">Stats artifact not published yet — ' +
+      'every number it will show is recomputable from the raw log above.</p>';
+    return;
+  }
+  const payerRows = (s.payers || []).map(p =>
+    `<tr><td>${p.label || ''}</td><td class="mono">${p.identity}</td><td>${p.settlements}</td></tr>`).join('');
+  const payeeRows = (s.payees || []).map(p =>
+    `<tr><td>${p.label || ''}</td><td class="mono">${p.identity}</td><td>${p.settlements}</td></tr>`).join('');
+  el.innerHTML = `<div class="card">
+    <p>Settled jobs: <strong>${s.settled_jobs}</strong> (${s.settlements} payout
+    receipt(s)) · Verified completions: <strong>${s.verified_completions}</strong><br>
+    Unique payers: <strong>${s.unique_payers}</strong> · Repeat payers:
+    <strong>${s.repeat_payers.length}</strong> · Unique payees:
+    <strong>${s.unique_payees}</strong> · Repeat payees: <strong>${s.repeat_payees.length}</strong><br>
+    Totals: gross <strong>${s.totals_usdc.gross}</strong> · fee
+    <strong>${s.totals_usdc.fee}</strong> · net <strong>${s.totals_usdc.net}</strong> USDC
+    (${s.amounts_known} payout(s) with public amounts, ${s.amounts_unknown} without)<br>
+    Failure receipts in the log: <strong>${s.failure_receipts.total}</strong> ·
+    Disputes: <strong>${s.disputes.filed}</strong> filed, ${s.disputes.open} open</p>
+    ${payerRows ? `<p><strong>Payers</strong></p><table><tr><th></th><th>Identity</th><th>Settlements</th></tr>${payerRows}</table>` : ''}
+    ${payeeRows ? `<p><strong>Payees</strong></p><table><tr><th></th><th>Identity</th><th>Settlements</th></tr>${payeeRows}</table>` : ''}
+    <p class="small">Window: ${s.window.from || '—'} → ${s.window.to}.
+    Computed from this log alone (method in stats.json) — recompute it
+    yourself; the market is relationships, not transactions, so we
+    publish the repeat column at full size, zeros included.
+    Generated ${s.generated_at}.</p></div>`;
 }
 
 async function main() {
@@ -215,6 +383,12 @@ async function main() {
       const badge = cls === 'external_probationary' ? ' ⚠️ probationary' : '';
       return `<tr><td>${i.display_name || i.label}</td><td>${CLASS_LABEL[cls] || cls}${badge}</td><td class="mono">${i.did || '— pending key —'}</td><td>${counts[i.label] || 0}</td><td>${i.status}</td></tr>`;
     }).join('') + '</table>';
+  await renderFunding();
+  await renderStats();
+  const openDisputed = new Set(ENTRIES
+    .filter(e => e.kind === 'receipt' &&
+      disputeStates(e.object.receipt_id).some(d => d.state === 'open'))
+    .map(e => e.object.receipt_id));
   document.getElementById('log').innerHTML =
     '<table><tr><th>#</th><th>Kind</th><th>What</th><th>When</th><th></th></tr>' +
     [...ENTRIES].reverse().map(e => {
@@ -222,7 +396,13 @@ async function main() {
       let what = e.kind === 'receipt' ? `${o.action.type} — ${o.issuer_label}`
         : e.kind === 'approval' ? `approval for ${o.scope.action_type} — ${o.approver_label}`
         : e.kind === 'revocation' ? `revocation of ${o.approval_id}`
-        : e.kind === 'issuer_revocation' ? `issuer revocation — ${o.issuer_label}` : e.kind;
+        : e.kind === 'issuer_revocation' ? `issuer revocation — ${o.issuer_label}`
+        : e.kind === 'dispute' ? `dispute of ${o.target_receipt_id} — ${o.disputer_label}`
+        : e.kind === 'dispute_resolution' ? `dispute resolution: ${o.decision} — ${o.resolver_label}` : e.kind;
+      if (e.kind === 'receipt' && o.outcome && o.outcome.status !== 'completed')
+        what += ` · ✖ ${o.outcome.status.toUpperCase()}`;
+      if (e.kind === 'receipt' && openDisputed.has(o.receipt_id))
+        what += ' · ⚠️ disputed';
       if (e.kind === 'receipt' && (e.issuer_class === 'external_probationary' ||
           (issuerInfo(o.issuer) || {}).class === 'external_probationary'))
         what += ' · ⚠️ probationary external';
