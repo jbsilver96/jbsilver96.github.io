@@ -99,12 +99,49 @@ history, we cannot silently rewrite our own fleet's receipts either.
 
 - `POST /v1/receipts` — accepts a fully signed receipt / approval /
   revocation object; the server re-validates registration, signature,
-  and chain head before appending. **v1 issuance is fleet-only** —
-  unregistered issuers are rejected. (Self-issuance by our fleet goes
-  through the same validated append path as the endpoint; there is no
-  back door.)
+  and chain head before appending. **Fleet issuance** runs through
+  this path; unregistered signers are rejected. (Self-issuance by our
+  fleet goes through the same validated append path as the endpoint;
+  there is no back door.)
 - `GET /v1/verify/{receipt_id}` — public, free forever, no account.
   This page performs the identical recompute in your browser.
+
+## External issuers (probationary)
+
+Outside issuance opened early by founder decision (2026-11-17) for
+**one probationary issuer at a time**, on published terms. The issuer
+registry the verifier reads is `issuers.json`, published next to the
+log: every issuer carries a **class** (`fleet`,
+`external_probationary`, `external`), a status, and a daily cap.
+
+- **Register:** send us your **did:key public identifier** and a
+  display name (Moltbook, or streampresence@muse.ai). A did:key is a
+  public identifier — **never send a private key; we never ask for
+  one, hold one, or accept one.** Until your did:key is on file your
+  entry reads `pending_key` and nothing you sign can be appended.
+- **Submit (v0.1 mechanics):** the issuance service is local, so
+  there is no public submission endpoint yet. Publish each fully
+  signed receipt JSON at a stable URL you control, or email it to
+  streampresence@muse.ai. We fetch it, run the same validation the
+  fleet path runs (registered signer, Ed25519 signature against the
+  registered did:key, per-issuer chain head, `args_public` must hash
+  to `args_hash`), plus the external terms below, and append it. A
+  rejected submission appends nothing; the rejection and its reason
+  are recorded on our side.
+- **Probationary terms:** cap **20 receipts/day**; every entry is
+  marked with its issuer class in the log and badged as probationary
+  in the verifier; registration is **revocable at any time** by a
+  signed `issuer_revocation` entry in the same log (revocation is
+  prospective — receipts issued while active stay verifiable);
+  failures stay in the log like everyone else's; probationary entries
+  are **excluded from the fleet-coverage metric** in the experiment
+  scorecard.
+- **Verification** of an external receipt asserts the same things as
+  a fleet receipt (in the log, signature valid against the issuer's
+  registered did:key, chains unbroken) and additionally displays the
+  issuer's class. It does not assert the issuer is a fleet agent, is
+  endorsed by us, or that its actions were wise — see the
+  does-not-assert list, which applies unchanged.
 
 ## A verification asserts — and does not assert
 

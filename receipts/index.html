@@ -35,7 +35,8 @@ fetches the public log and recomputes every signature, chain link, and
 approval check locally. You do not have to trust our server — there
 isn't one in the loop. Spec: <a href="SPEC.md">SPEC.md</a> ·
 Raw log: <a href="receipts.jsonl">receipts.jsonl</a> ·
-Registry: <a href="registry.json">registry.json</a></p>
+Registry: <a href="registry.json">registry.json</a> ·
+Issuer registry (incl. external issuers): <a href="issuers.json">issuers.json</a></p>
 
 <h2>Verify a receipt</h2>
 <p><input type="text" id="rid" placeholder="rcpt_…">
@@ -105,9 +106,12 @@ const DOES_NOT_ASSERT = [
   'the real-world identity behind a did:key beyond its registry entry',
 ];
 
-let ENTRIES = [], REGISTRY = { issuers: [] };
+let ENTRIES = [], REGISTRY = { issuers: [] }, ISSUERS = { issuers: [] };
 const byKindId = (kind, field, id) =>
   ENTRIES.find(e => e.kind === kind && e.object[field] === id);
+const issuerInfo = did => ISSUERS.issuers.find(i => i.did && i.did === did);
+const CLASS_LABEL = { fleet: 'Fleet', external: 'External',
+  external_probationary: 'External — probationary' };
 
 async function verifyChain() {
   let prev = 'GENESIS';
@@ -129,7 +133,12 @@ async function verifyReceipt(rid) {
   const chainOk = await verifyChain();
   checks.push(['log chain intact', chainOk, `${ENTRIES.length} entries replayed`]);
   checks.push(['issuer signature', await sigValid(r, r.issuer), 'Ed25519 over JCS-canonical receipt']);
-  checks.push(['issuer registered', REGISTRY.issuers.some(i => i.did === r.issuer), r.issuer]);
+  const info = issuerInfo(r.issuer);
+  const registered = REGISTRY.issuers.some(i => i.did === r.issuer) || !!info;
+  checks.push(['issuer registered', registered, r.issuer]);
+  const iClass = info ? info.class : (registered ? 'fleet' : null);
+  if (iClass) checks.push(['issuer class', true,
+    CLASS_LABEL[iClass] || iClass]);
   let prev = 'GENESIS';
   for (const e of ENTRIES) {
     if (e.seq >= entry.seq) break;
@@ -168,7 +177,13 @@ async function verifyReceipt(rid) {
     <span class="verdict ${allOk ? 'ok' : 'bad'}">${allOk ? '✅ VALID' : '❌ INVALID'}</span>
     <p class="mono">${rid}</p>
     <p><strong>${r.action.type}</strong> by ${r.issuer_label} · issued ${r.issued_at}` +
-    (r.action.artifact_url ? `<br>Artifact: <a href="${r.action.artifact_url}">${r.action.artifact_url}</a>` : '') + `</p>
+    (r.action.artifact_url ? `<br>Artifact: <a href="${r.action.artifact_url}">${r.action.artifact_url}</a>` : '') + `</p>` +
+    (iClass === 'external_probationary' ? `<p>⚠️ <strong>External issuer — PROBATIONARY.</strong>
+    This receipt was issued by a registered outside issuer on probationary terms
+    (volume-capped, revocable). It is not a fleet agent's receipt; the signature
+    proves it came from that issuer's key, nothing more.</p>` : '') +
+    (iClass === 'external' ? `<p><strong>External issuer.</strong> Issued by a
+    registered outside issuer, not a fleet agent.</p>` : '')
     <table>${rows}</table>
     <p><strong>This receipt does not assert:</strong></p>
     <ul>${DOES_NOT_ASSERT.map(d => `<li>${d}</li>`).join('')}</ul>
@@ -180,25 +195,37 @@ async function verifyReceipt(rid) {
 }
 
 async function main() {
-  const [logText, regText] = await Promise.all([
+  const [logText, regText, issText] = await Promise.all([
     fetch('receipts.jsonl').then(r => r.text()),
     fetch('registry.json').then(r => r.json()),
+    fetch('issuers.json').then(r => r.ok ? r.json() : { issuers: [] })
+      .catch(() => ({ issuers: [] })),
   ]);
   ENTRIES = logText.split('\n').filter(l => l.trim()).map(l => JSON.parse(l));
   REGISTRY = regText;
+  ISSUERS = issText;
   const counts = {};
   for (const e of ENTRIES) if (e.kind === 'receipt')
     counts[e.object.issuer_label] = (counts[e.object.issuer_label] || 0) + 1;
+  const regRows = ISSUERS.issuers.length ? ISSUERS.issuers : REGISTRY.issuers;
   document.getElementById('registry').innerHTML =
-    '<table><tr><th>Issuer</th><th>DID</th><th>Receipts</th><th>Status</th></tr>' +
-    REGISTRY.issuers.map(i => `<tr><td>${i.label}</td><td class="mono">${i.did}</td><td>${counts[i.label] || 0}</td><td>${i.status}</td></tr>`).join('') + '</table>';
+    '<table><tr><th>Issuer</th><th>Class</th><th>DID</th><th>Receipts</th><th>Status</th></tr>' +
+    regRows.map(i => {
+      const cls = i.class || 'fleet';
+      const badge = cls === 'external_probationary' ? ' ⚠️ probationary' : '';
+      return `<tr><td>${i.display_name || i.label}</td><td>${CLASS_LABEL[cls] || cls}${badge}</td><td class="mono">${i.did || '— pending key —'}</td><td>${counts[i.label] || 0}</td><td>${i.status}</td></tr>`;
+    }).join('') + '</table>';
   document.getElementById('log').innerHTML =
     '<table><tr><th>#</th><th>Kind</th><th>What</th><th>When</th><th></th></tr>' +
     [...ENTRIES].reverse().map(e => {
       const o = e.object;
-      const what = e.kind === 'receipt' ? `${o.action.type} — ${o.issuer_label}`
+      let what = e.kind === 'receipt' ? `${o.action.type} — ${o.issuer_label}`
         : e.kind === 'approval' ? `approval for ${o.scope.action_type} — ${o.approver_label}`
-        : e.kind === 'revocation' ? `revocation of ${o.approval_id}` : e.kind;
+        : e.kind === 'revocation' ? `revocation of ${o.approval_id}`
+        : e.kind === 'issuer_revocation' ? `issuer revocation — ${o.issuer_label}` : e.kind;
+      if (e.kind === 'receipt' && (e.issuer_class === 'external_probationary' ||
+          (issuerInfo(o.issuer) || {}).class === 'external_probationary'))
+        what += ' · ⚠️ probationary external';
       const btn = e.kind === 'receipt' ? `<button data-verify="${o.receipt_id}">verify</button>` : '';
       return `<tr><td>${e.seq}</td><td>${e.kind}</td><td>${what}</td><td class="small">${e.ts}</td><td>${btn}</td></tr>`;
     }).join('') + '</table>';

@@ -1,0 +1,64 @@
+{
+  "issuers": [
+    {
+      "class": "fleet",
+      "daily_cap": null,
+      "did": "did:key:z6MkwB88YSpduPYgbL9CPm3bnNCzgb7NxuLnvMHLNFZgkGJs",
+      "display_name": "muse",
+      "kind": "fleet-agent",
+      "label": "muse",
+      "registered_at": "2026-11-17T20:59:34Z",
+      "status": "active"
+    },
+    {
+      "class": "fleet",
+      "daily_cap": null,
+      "did": "did:key:z6MkhwynbbvzuGj4QpUtAGNJmu9jc4nEonAfwcyZUy5FCyFb",
+      "display_name": "scout",
+      "kind": "fleet-agent",
+      "label": "scout",
+      "registered_at": "2026-11-17T20:59:34Z",
+      "status": "active"
+    },
+    {
+      "class": "fleet",
+      "daily_cap": null,
+      "did": "did:key:z6MkpN6uTeutxx5QJb5GXeJERFXimj3RzUc2hQKnfvMCgHuE",
+      "display_name": "researcher",
+      "kind": "fleet-agent",
+      "label": "researcher",
+      "registered_at": "2026-11-17T20:59:34Z",
+      "status": "active"
+    },
+    {
+      "class": "fleet",
+      "daily_cap": null,
+      "did": "did:key:z6Mkv6jZFetnP4pm2VAtsHgqMtSHkeWx2FXAKeJfVnQTBN7i",
+      "display_name": "arbiter",
+      "kind": "fleet-agent",
+      "label": "arbiter",
+      "registered_at": "2026-11-17T20:59:34Z",
+      "status": "active"
+    },
+    {
+      "class": "fleet",
+      "daily_cap": null,
+      "did": "did:key:z6Mkfytzysj75EBsRAkDPom1kWDbTJW3PRgEuxmRRQ6UPgkw",
+      "display_name": "johnny",
+      "kind": "approver",
+      "label": "johnny",
+      "registered_at": "2026-11-17T20:59:34Z",
+      "status": "active"
+    },
+    {
+      "class": "external_probationary",
+      "daily_cap": 20,
+      "did": null,
+      "display_name": "nyna",
+      "label": "nyna",
+      "registered_at": "2026-11-17T23:39:34Z",
+      "status": "pending_key"
+    }
+  ],
+  "issuers_version": "0.1"
+}
