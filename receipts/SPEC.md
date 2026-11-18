@@ -463,6 +463,90 @@ is complete where absent; that the artifact still exists unchanged
 beyond its `result_hash`; or any real-world identity behind a did:key
 beyond its registry entry.
 
+## Verifying the operator
+
+Everything above lets a stranger check a receipt. This section
+lets a stranger check *us* — the log operator — using only the
+published files and their own code. Nothing here calls our
+server; the local API's verify endpoint performs the same
+recompute, but trusting it is optional by design.
+
+Published inputs, all static files next to this spec:
+
+- `receipts.jsonl` — the log.
+- `issuers.json` — the issuer registry (DID, class, status,
+  daily cap per issuer).
+- `checkpoints.jsonl` — signed checkpoints over the chain head.
+- `registry.json` — the fleet registry (companion to
+  `issuers.json`).
+
+**Step 1 — recompute the chain.** Each line of the log is
+`{seq, ts, prev_hash, entry_hash, kind, object}`, written as JCS
+canonical JSON. `entry_hash = SHA-256(prev_hash + JCS(entry
+minus entry_hash))`, hex-encoded, where the concatenation is of
+the UTF-8 strings, `prev_hash` is the previous entry's
+`entry_hash`, and the first entry's `prev_hash` is the literal
+string `"GENESIS"`. Recompute every line: `seq` must equal the
+line number (from 0) and each recomputed hash must match. A
+single altered, dropped, or reordered entry breaks every hash
+after it.
+
+**Step 2 — verify every signature.** Every object in the log is
+signed the same way (see "Signature & encoding"): Ed25519 over
+the JCS canonical form of the object excluding its `signature`
+field, the signature base64url-encoded. The signer's `did:key`
+carries the public key itself (multicodec `0xed 0x01` + raw
+key, base58btc), so no key server is involved. Apply this to
+receipts (field `issuer`), approvals (`approver`), revocations
+(`revoked_by`), disputes (`disputer`), resolutions
+(`resolver`), countersignatures (`signer`), and issuer
+revocations (`revoked_by`).
+
+**Step 3 — check standing, and the per-issuer chain.** A valid
+signature from an unregistered key proves nothing about
+standing. For each signer: the DID must be listed in
+`issuers.json` with `status: "active"`, and the log must
+contain no entry of kind `issuer_revocation` whose object names
+that DID in its `issuer_did` field. Revocation is prospective:
+objects signed while the issuer was active remain verifiable;
+an issuer under revocation is not in good standing for anything
+further. Separately, each receipt's `prev_receipt_hash` must
+equal the `entry_hash` of the same issuer's previous receipt
+entry in the log — a per-issuer chain inside the global chain,
+so one issuer's history cannot be quietly edited either.
+
+**Step 4 — check the checkpoints.** A checkpoint is a signed
+object `{checkpoint_version: "0.1", log_entries, chain_head,
+checkpoint_at, signer, signer_label, signature}` in
+`checkpoints.jsonl`, signed by the operator (the `muse` fleet
+identity, `did:key:z6MkwB88YSpduPYgbL9CPm3bnNCzgb7NxuLnvMHLNFZgkGJs`).
+Verify its signature as in step 2, then confirm `chain_head`
+equals the `entry_hash` recomputed in step 1 at position
+`log_entries - 1`. Checkpoints are committed to this public
+git repository, whose history cannot be rewritten unobserved
+either; together they pin the log's past. A copy of the log
+that disagrees with a checkpoint is a log that was rewritten
+after that checkpoint.
+
+**Step 5 — check the money claim independently.** The bounty
+pool's funding is a claim about an external system, so check it
+there. Receipt `rcpt_cd03818c5a9f4b5aa3c3f0e0226555be`
+(`wallet.funding_received` — verified by steps 1–3 like any
+other) records in its `args_public`: chain `solana`, address
+`ED9151UK21UotRbGFCmnUxa4BbE3UwQF5k8fCiR545Ps`, and per-asset
+funding transactions (`assets[].tx`, with amounts, and for USDC
+the receiving token account). Query any Solana RPC endpoint or
+block explorer for that address's balances and those
+transaction signatures. The receipt tells you exactly what to
+look for; the chain, not us, says whether it is true.
+
+What these five steps establish: completeness and integrity of
+the log as published, the registration and standing of every
+signer, a checkpoint-pinned past, and the pool's funding. What
+they do not establish is listed in "A verification asserts —
+and does not assert" above, and applies unchanged: integrity
+of the record is not wisdom of the actions recorded in it.
+
 ## Monetization hooks (present, charged at $0)
 
 Issuer registry (the future subscription object), published per-issuer

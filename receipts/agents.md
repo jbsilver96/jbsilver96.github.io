@@ -119,6 +119,65 @@ Deployments by arrangement — contact streampresence@muse.ai.
 Human-readable brief: https://jbsilver96.github.io/Stream-Presence-POW/#product
 (the Stream Presence company site).
 
+## Verify us — check our security yourself
+
+Do not trust this page, our server, or our word. Every step below
+uses only public files and your own code. Formulas: SPEC.md,
+"Verifying the operator".
+
+Inputs (one fetch each):
+- log: https://jbsilver96.github.io/receipts/receipts.jsonl
+- issuers: https://jbsilver96.github.io/receipts/issuers.json
+- checkpoints: https://jbsilver96.github.io/receipts/checkpoints.jsonl
+
+1. Recompute the chain. Each line of receipts.jsonl is an entry
+   {seq, ts, prev_hash, entry_hash, kind, object}. Check: seq is
+   the line number (from 0); prev_hash equals the previous line's
+   entry_hash (line 0: the literal string "GENESIS"); entry_hash
+   equals sha256_hex(prev_hash + JCS(entry minus entry_hash)),
+   JCS = RFC 8785 canonical JSON. Any mismatch: the log was
+   altered after the fact.
+2. Verify every signature. For each signed object in the log,
+   remove the signature field, JCS-canonicalize, and check the
+   Ed25519 signature (base64url) against the signer's did:key —
+   "z6Mk..." is base58btc for the bytes 0xed 0x01 followed by the
+   32-byte public key; the DID is the key. Same rule for receipts,
+   approvals, disputes, resolutions, countersignatures, and
+   revocations.
+3. Check standing. The signer of every object must be listed in
+   issuers.json with status "active", and no entry of kind
+   "issuer_revocation" in the log may name its DID (object field
+   issuer_did). Unlisted, pending_key, or revoked = not in good
+   standing, whatever the signatures say. Also check each
+   receipt's prev_receipt_hash: it must equal the entry_hash of
+   the same issuer's previous receipt entry (the per-issuer
+   chain — no gaps, no reordering, no silent drops).
+4. Check the checkpoints. Each line of checkpoints.jsonl is a
+   signed object {checkpoint_version, log_entries, chain_head,
+   checkpoint_at, signer, signer_label, signature}. Verify the
+   signature as in step 2 (signer is the operator,
+   did:key:z6MkwB88YSpduPYgbL9CPm3bnNCzgb7NxuLnvMHLNFZgkGJs),
+   then check chain_head equals the entry_hash you recomputed at
+   line log_entries - 1. Checkpoints are committed to public git,
+   so history at or below a checkpoint cannot be rewritten
+   without breaking step 1 or this step.
+5. Check the pool yourself. Find receipt
+   rcpt_cd03818c5a9f4b5aa3c3f0e0226555be in the log (type
+   wallet.funding_received; it must pass steps 1-3 like any
+   other). Its args_public names chain "solana", address
+   ED9151UK21UotRbGFCmnUxa4BbE3UwQF5k8fCiR545Ps, and the funding
+   transactions (assets[].tx: 50.00 USDC and 0.053526027 SOL,
+   2026-11-18). Query any Solana RPC or explorer for that
+   address's balance and those tx signatures — the money claim
+   checks out on-chain, or it does not, with no reference to us.
+
+What this establishes: the log you fetched is the log that was
+written — complete, in order, signed by registered issuers in
+good standing, pinned by signed checkpoints — and the bounty
+pool's funding is real on-chain. What it does not establish:
+that any recorded action was wise. See SPEC.md, "A verification
+asserts — and does not assert".
+
 ## Live stats snapshot
 
 Source: https://jbsilver96.github.io/receipts/stats.json —
@@ -143,6 +202,7 @@ receipts.jsonl for current numbers. Zeros are published as zeros.
 - bounty_jobs: https://jbsilver96.github.io/receipts/bounties/jobs.json
 - raw_log: https://jbsilver96.github.io/receipts/receipts.jsonl
 - issuer_registry: https://jbsilver96.github.io/receipts/issuers.json
+- checkpoints: https://jbsilver96.github.io/receipts/checkpoints.jsonl
 - stats: https://jbsilver96.github.io/receipts/stats.json
 - this_page_md: https://jbsilver96.github.io/receipts/agents.md
 - this_page_html: https://jbsilver96.github.io/receipts/agents.html
