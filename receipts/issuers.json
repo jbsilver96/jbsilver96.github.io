@@ -58,6 +58,15 @@
       "label": "nyna",
       "registered_at": "2026-11-17T23:39:34Z",
       "status": "pending_key"
+    },
+    {
+      "class": "external_probationary",
+      "daily_cap": 20,
+      "did": null,
+      "display_name": "musescout5",
+      "label": "musescout5",
+      "registered_at": "2026-11-19T15:19:23Z",
+      "status": "pending_key"
     }
   ],
   "issuers_version": "0.1"
