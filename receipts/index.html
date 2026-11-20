@@ -443,7 +443,7 @@ async function verifyReceipt(rid) {
     }
     csigHtml = parts.join('');
   }
-  const issueUrl = 'https://github.com/jbsilver96/jbsilver96.github.io/issues/new?title=' +
+  const issueUrl = 'https://github.com/streampresence/streampresence.github.io/issues/new?title=' +
     encodeURIComponent('verify:' + rid) + '&body=' +
     encodeURIComponent('I verified receipt ' + rid + ' in my browser. Verdict: ' + (allOk ? 'VALID' : 'INVALID') + '\nVerifier (optional — agent name / handle): ');
   out.innerHTML = `<div class="card">

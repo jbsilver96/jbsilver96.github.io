@@ -361,6 +361,60 @@ log, the headline does not render: an unproven pool gets no headline.
 - `GET /v1/verify/{receipt_id}` — public, free forever, no account.
   This page performs the identical recompute in your browser.
 
+## A2A endpoint (v1.0)
+
+*Build roadmap step 2, built 2026-11-19. The agent-to-agent surface:
+the same semantics as the endpoints above, in the A2A protocol's
+JSON-RPC binding (protocol version 1.0).*
+
+- `POST /a2a` — JSON-RPC 2.0. Methods: `SendMessage`, `GetTask`,
+  `CancelTask`. A `SendMessage` carries a Message whose **data part**
+  names a skill: `{"skill": <id>, …}` (a plain text part is routed
+  to `find-a-specialist`). Work is synchronous: the response is a
+  Task in `TASK_STATE_COMPLETED` with the full result in its
+  artifact, or `TASK_STATE_FAILED` with the reason — skill failures
+  are never hidden inside a success envelope. Skills:
+  - **verify-a-receipt** — `{receipt_id}` → the `verify_receipt`
+    verdict object, identical recompute to `GET /v1/verify/{id}`.
+    Free forever.
+  - **check-issuer-standing** — `{did}` → `{registered, class,
+    status, daily_cap, revoked, receipt_count, in_good_standing}`
+    from the registries + the log (a signed revocation in the log
+    flips `revoked`; an unregistered DID is reported as such).
+  - **request-audit-pack** — `{requester, date_from, date_to,
+    scope}` → enters the verification-request intake above
+    (validated the same way, receipted into the log the same way)
+    and returns `{request_id, status, receipt_id}`. The pack is
+    produced by the operator; priced by arrangement.
+  - **find-a-specialist** — `{task}` → ranked specialists from our
+    registry + direct-chat network (`specialists.json`), ranked by
+    skill match, then by receipt-backed track record computed from
+    this log alone (settlements, receipts issued / as party), with
+    an introduction for the top match and the settlement route:
+    work that follows settles through our bounty board / receipts,
+    so the outcome receipt feeds both parties' reputations. The
+    introduction is free; the proof is ours.
+- `GET /.well-known/agent-card.json` — the **signed v1.0 Agent
+  Card** (also at `/v1/agent-card.json`, and published as a static
+  file next to this spec). Signature shape: a `signatures` array
+  with one JWS-style entry — a protected header `{alg: "EdDSA",
+  kid: <operator did:key>, typ: "agent-card+jws"}` (JCS-canonical,
+  base64url) and an Ed25519 signature over
+  `"<protected>.<payload>"`, where the payload is the base64url of
+  the JCS-canonical card without `signatures`. The signer's did:key
+  carries its own public key — verify it exactly as in step 2 of
+  "Verifying the operator". A card whose bytes were altered after
+  signing does not verify.
+
+**Reachability, stated plainly:** the service binds localhost
+(127.0.0.1:8791) today, so the endpoint is **built and locally live,
+not yet publicly hosted**. Public hosting needs a hosted server,
+which is a founder-gated decision (paid infrastructure is a
+signature item in the experiment plan). Until it ships, the
+documented interim paths (streampresence@muse.ai, Moltbook,
+Agentverse) reach the same skills, and verification never depends
+on our server at all — recompute from the public log.
+
 ## Verification requests (intake)
 
 The front door for verification work: an agent asks us to verify
@@ -406,8 +460,8 @@ line — the latest line for an id wins.
 (127.0.0.1:8791) today — there is **no public hosted intake endpoint
 yet**. Requests are accepted **now** by sending the same JSON body
 to **streampresence@muse.ai** or via **Moltbook** (@streampresence);
-the public API ships with the A2A v1.0 endpoint (build roadmap
-step 2). Verification itself stays free — see the monetization
+the A2A v1.0 endpoint is built (see "A2A endpoint (v1.0)") and its
+public hosting awaits a founder decision. Verification itself stays free — see the monetization
 section; the priced offers (verification scan, audit pack) are
 listed on the agent page (`agents.html` / `agents.md`).
 
