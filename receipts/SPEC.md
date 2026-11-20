@@ -1,4 +1,4 @@
-# Receipts — Spec v0.1, with v0.2 and v0.3 extensions
+# Receipts — Spec v0.1, with v0.2, v0.3 and v0.4 extensions
 
 *Stream Presence. Signed action receipts + binding approval objects for
 AI agents. Experiment: 14-day public dogfood from 2026-11-17.
@@ -6,7 +6,10 @@ The v0.2 extensions (failure receipts, disputes, the repeat column,
 proof of funding) were specified by the market itself — the threads
 are cited in each section — and are additive: every v0.1 object
 verifies unchanged. The v0.3 extension (countersignatures) was
-ordered by the founder on 2026-11-18 and is likewise additive.*
+ordered by the founder on 2026-11-18 and is likewise additive.
+The v0.4 extension (VC dual-issuance, 2026-11-20) adds a W3C
+Verifiable Credentials presentation form alongside the native
+objects; it changes no native object at all.*
 
 Design law: boring, standard, implementable in days. No chain, no
 token, no new cryptography. JSON + Ed25519 + SHA-256 + HTTPS.
@@ -303,6 +306,101 @@ these states:
 States 1–2 are the receiver's word; state 3 is the issuer's; state
 4 is the disagreement path; state 5 is the absence, made legible.
 Silence is not a closing state.
+
+## Verifiable Credentials — VC dual-issuance (v0.4)
+
+*Build roadmap step 2b, shipped 2026-11-20. Reference: Garzon et
+al., "Verifiable Credentials for Agent-to-Agent Communication"
+(arXiv:2511.02841, TU Berlin / T-Labs, Nov 2025) — its prototype
+pairs JSON-LD VCs + Ed25519 + Presentation Exchange over A2A, and
+its evaluation validates our deterministic-verification design
+(their LLM-orchestrated security procedures corrupted VCs in
+transit and once talked themselves into skipping authentication —
+our crypto stays in deterministic code, never in the LLM's hands).*
+
+Every receipt, and every countersignature, is **also issued as a
+W3C Verifiable Credential 2.0** — a portable presentation form of
+the same claim. The native JCS log format above stays canonical
+and unchanged; the VC never replaces it and never enters the
+signed log. A VC is a sidecar signed object, stored under
+`log/credentials/<id>.vc.json` and published next to the log at
+`credentials/<receipt_id>.vc.json`, whose claim embeds the full
+native object and binds to it by JCS hash — a verifier can check
+the VC against the log, and can always fall back to the native
+receipt, which verifies on its own.
+
+```json
+{
+  "@context": ["https://www.w3.org/ns/credentials/v2",
+               "https://streampresence.dev/ns/receipts/v1"],
+  "id": "urn:stream-presence:vc:rcpt_<uuid>",
+  "type": ["VerifiableCredential", "StreamPresenceReceiptCredential"],
+  "issuer": "did:key:z6Mk… (the receipt's issuer)",
+  "validFrom": "… (the receipt's issued_at)",
+  "credentialSubject": {
+    "id": "did:key:z6Mk… (the counterparty named in args_public;
+           the receipt's own URN when it names none)",
+    "receiptId": "rcpt_<uuid>", "actionType": "…",
+    "argsHash": "sha256:…", "resultHash": "sha256:… | null",
+    "nativeHash": "sha256:<JCS hash of the full native receipt>",
+    "nativeReceipt": { "…the receipt, exactly as logged…" },
+    "tier": "basic | rich", "issuerClass": "fleet | …",
+    "counterparty": "did:key:… | null"
+  },
+  "proof": { "type": "DataIntegrityProof",
+             "cryptosuite": "eddsa-jcs-2022",
+             "verificationMethod": "did:key:z6Mk…#z6Mk…",
+             "proofPurpose": "assertionMethod",
+             "proofValue": "z… (multibase base58btc)" }
+}
+```
+
+- **Countersignature VCs** use type
+  `StreamPresenceCountersignatureCredential`: issuer = the
+  countersigner, subject = the receipt's issuer, claim = verdict,
+  note, target receipt id + its native hash, and both native
+  objects bound by hash.
+- **Tiers** (the reference paper's basic-VC / rich-VC): a receipt
+  whose args are public yields a **rich** VC whose claim also
+  carries `argsPublic`; a hash-only receipt yields a **basic** VC
+  carrying hashes only. The tier is a property of the native
+  receipt — a basic receipt presented as rich is INVALID; the VC
+  form can never disclose what the native receipt does not.
+- **Proof:** W3C Data Integrity, cryptosuite **eddsa-jcs-2022** —
+  Ed25519 over `SHA-256(JCS(proof config)) ||
+  SHA-256(JCS(document minus proof))`. One deliberate deviation
+  from the reference prototype: it used URDNA2015
+  (eddsa-rdfc-2022); we use the JCS suite because every signed
+  payload in this system is already JCS over a float-free subset —
+  one canonicalization everywhere, one verifier code path.
+- **Issuance discipline:** a VC is signed **only by the native
+  object's own signer**, with that signer's key. The operator
+  cannot mint a VC for an external issuer's receipt (it does not
+  hold, and never asks for, that key); external issuers issue the
+  VC form of their own receipts. `receipts vc-backfill` reports
+  such objects skipped, with the reason. The claim's `issuerClass`
+  is reported, not blessed — standing is checked exactly as for a
+  native receipt (the registry is our answer to the paper's open
+  "who designates trusted issuers" problem).
+- **Verification** (`receipts verify-vc <file>`, library
+  `vc.verify_credential`): the proof verifies against the issuer's
+  did:key; the embedded native object's own signature verifies;
+  every claim field, the tier, the subject, and `nativeHash`
+  recompute against the embedded native object. A tampered claim,
+  a swapped native receipt, or a basic-as-rich presentation all
+  fail.
+- **Presentation:** `receipts present <id>…` wraps credentials in
+  a `VerifiablePresentation` carrying a **DIF Presentation
+  Exchange** `presentation_submission` (definition
+  `stream-presence-receipt-presentation`, one input descriptor for
+  a Stream Presence receipt/countersignature credential), so a VC
+  can be presented at A2A dialogue start and matched mechanically
+  against what the dialogue asked for. The holder signs the
+  presentation (Data Integrity, proofPurpose `authentication`)
+  when the holder's key is held. The operator service also serves
+  `GET /v1/credentials/{rcpt_…|csig_…}` on the key-holding host;
+  the read-only public node holds no keys and cannot sign, so
+  there the published static credential files are the surface.
 
 ## The repeat column — stats artifact (v0.2)
 
