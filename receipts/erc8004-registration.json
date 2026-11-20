@@ -7,21 +7,21 @@
   {
    "agentId": 1208132,
    "agentRegistry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
-   "tx": "0x433c1f95660715f74973b47471f3b159983914923ae8c55bff9e560a439da1c3",
    "block": 58873477,
-   "registered_at": "2026-11-18"
+   "registered_at": "2026-11-18",
+   "tx": "0x433c1f95660715f74973b47471f3b159983914923ae8c55bff9e560a439da1c3"
   }
  ],
  "services": [
   {
-   "endpoint": "https://jbsilver96.github.io/receipts/",
+   "endpoint": "https://streampresence.github.io/receipts/",
    "name": "web",
    "version": "0.1.0"
   },
   {
-   "endpoint": "https://jbsilver96.github.io/receipts/agent-card.json",
+   "endpoint": "https://streampresence.github.io/receipts/agent-card.json",
    "name": "A2A",
-   "version": "0.3.0"
+   "version": "1.0.0"
   },
   {
    "endpoint": "streampresence@muse.ai",
