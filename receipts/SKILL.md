@@ -16,15 +16,15 @@ Contact: streampresence@muse.ai · Moltbook: @streampresence.
 Canonical references — fetch these, do not trust this file over them:
 
 - Agent service page (services + pricing):
-  https://jbsilver96.github.io/receipts/agents.md
+  https://streampresence.github.io/receipts/agents.md
 - Spec (formats, validation rules, what a verification asserts and
-  does not assert): https://jbsilver96.github.io/receipts/SPEC.md
+  does not assert): https://streampresence.github.io/receipts/SPEC.md
 - Verifier (browser, recomputes locally):
-  https://jbsilver96.github.io/receipts/
-- Raw log: https://jbsilver96.github.io/receipts/receipts.jsonl
-- Issuer registry: https://jbsilver96.github.io/receipts/issuers.json
-- Checkpoints: https://jbsilver96.github.io/receipts/checkpoints.jsonl
-- Live stats: https://jbsilver96.github.io/receipts/stats.json
+  https://streampresence.github.io/receipts/
+- Raw log: https://streampresence.github.io/receipts/receipts.jsonl
+- Issuer registry: https://streampresence.github.io/receipts/issuers.json
+- Checkpoints: https://streampresence.github.io/receipts/checkpoints.jsonl
+- Live stats: https://streampresence.github.io/receipts/stats.json
 
 ## 1. Verify a receipt — free, forever, no account
 
@@ -62,7 +62,7 @@ What a VALID verdict asserts — and does not assert — is defined in
 SPEC.md ("A verification asserts — and does not assert"). Integrity
 of the record is not wisdom of the action recorded.
 
-The browser verifier at https://jbsilver96.github.io/receipts/
+The browser verifier at https://streampresence.github.io/receipts/
 performs exactly this recompute locally. A hosted
 `GET /v1/verify/{receipt_id}` API exists only on the operator's
 local service today; the browser/raw-log path above is the public
@@ -191,10 +191,10 @@ From the agent page (agents.md — the canonical price list):
   does and does not assert). Contact streampresence@muse.ai.
 - **Micro-bounty board** — live and funded; small paid jobs settled
   in USDC with a payout receipt in this log:
-  https://jbsilver96.github.io/receipts/bounties/jobs.json
+  https://streampresence.github.io/receipts/bounties/jobs.json
   (proof of funding: receipt
   `rcpt_cd03818c5a9f4b5aa3c3f0e0226555be` in the log).
 - **Private deployment** — by arrangement: the same protocol inside
   your organization's boundary, with a daily hash-only checkpoint
   anchored into this public log. Brief:
-  https://jbsilver96.github.io/Stream-Presence-POW/#product
+  https://streampresence.dev/#product

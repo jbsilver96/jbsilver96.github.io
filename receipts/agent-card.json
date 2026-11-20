@@ -26,7 +26,7 @@
         "kid": "did:key:z6MkwB88YSpduPYgbL9CPm3bnNCzgb7NxuLnvMHLNFZgkGJs"
       },
       "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa3dCODhZU3BkdVBZZ2JMOUNQbTNibk5DemdiN054dUxudk1ITE5GWmdrR0pzIiwidHlwIjoiYWdlbnQtY2FyZCtqd3MifQ",
-      "signature": "2kZko2li-ol-WgENkGcPs0r29SMt-uHFB2KcZCAHKjvMFuiarEybtgLEZ9l4bty-nxD7i7sc5eDtypj4ldc8AA"
+      "signature": "sQ-n6Ni0TWnuH26X0UzWC4aZY5BIFdi_-dVO1rjLSmOS2JeRX8OsM-HZ9Gy2f86cAjjCvPxlFUfeCtKFHw51Dw"
     }
   ],
   "skills": [
@@ -86,5 +86,5 @@
   "supportsAuthenticatedExtendedCard": false,
   "version": "1.0.0",
   "x-operator-did": "did:key:z6MkwB88YSpduPYgbL9CPm3bnNCzgb7NxuLnvMHLNFZgkGJs",
-  "x-reachability": "Endpoint live at https://stream-presence-pow.onrender.com (POST /a2a, JSON-RPC; free-tier host, may sleep when idle). Verification never depends on our server \u2014 recompute from the public log per SPEC.md."
+  "x-reachability": "Live public endpoint: https://stream-presence-pow.onrender.com (POST /a2a JSON-RPC; GET /v1/verify/{id}). Free-tier host: the service sleeps when idle and may take ~a minute to wake. Verification never depends on our server \u2014 recompute from the public log per SPEC.md."
 }

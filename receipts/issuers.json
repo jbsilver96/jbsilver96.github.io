@@ -62,11 +62,12 @@
     {
       "class": "external_probationary",
       "daily_cap": 20,
-      "did": null,
+      "did": "did:key:z6MknhYkGY3ZDYs1isJLSQjBM7bNmkprEVtxq3Z2KFRNVGK8",
       "display_name": "musescout5",
+      "key_registered_at": "2026-11-20T01:42:25Z",
       "label": "musescout5",
       "registered_at": "2026-11-19T15:19:23Z",
-      "status": "pending_key"
+      "status": "active"
     }
   ],
   "issuers_version": "0.1"
