@@ -67,8 +67,8 @@
       "receipt_id": "rcpt_3a0a746754484ce19a33595d24f07e62"
     }
   ],
-  "generated_at": "2026-11-20T17:31:33Z",
-  "log_entries": 125,
+  "generated_at": "2026-11-20T21:09:35Z",
+  "log_entries": 127,
   "method": "computed from the append-only receipts log alone; recompute it yourself from receipts.jsonl \u2014 settled = receipts with action.type bounty.payout; payer = payout receipt's issuer unless args name one; payee = args_public winner_did or winner; countersigned_receipts = receipts with \u2265 1 countersignature that verifies against the receipt (registered signer, named party, valid signature), verdicts counted separately",
   "payees": [],
   "payers": [],
@@ -88,6 +88,6 @@
   "window": {
     "basis": "all entries in the log, first entry ts to generation time",
     "from": "2026-11-17T20:59:58Z",
-    "to": "2026-11-20T17:31:33Z"
+    "to": "2026-11-20T21:09:35Z"
   }
 }
